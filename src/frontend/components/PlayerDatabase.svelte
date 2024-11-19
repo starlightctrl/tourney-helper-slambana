@@ -7,6 +7,7 @@
     let importError = '';
     let successMessage = '';
     let loading = false;
+    let aliasInput = '';
     
     let newPlayer = {
         tag: '',
@@ -192,6 +193,42 @@
             bind:value={newPlayer.tag} 
             placeholder="Player Tag"
         />
+        <div class="aliases-input">
+            <div class="alias-list">
+                {#each newPlayer.aliases as alias, i}
+                    <span class="alias-tag">
+                        {alias}
+                        <button 
+                            class="remove-alias" 
+                            on:click={() => {
+                                newPlayer.aliases = newPlayer.aliases.filter((_, index) => index !== i);
+                            }}
+                        >×</button>
+                    </span>
+                {/each}
+            </div>
+            <div class="alias-add">
+                <input 
+                    type="text" 
+                    bind:value={aliasInput} 
+                    placeholder="Add alias"
+                    on:keydown={(e) => {
+                        if (e.key === 'Enter' && aliasInput.trim()) {
+                            newPlayer.aliases = [...newPlayer.aliases, aliasInput.trim()];
+                            aliasInput = '';
+                        }
+                    }}
+                />
+                <button 
+                    on:click={() => {
+                        if (aliasInput.trim()) {
+                            newPlayer.aliases = [...newPlayer.aliases, aliasInput.trim()];
+                            aliasInput = '';
+                        }
+                    }}
+                >Add Alias</button>
+            </div>
+        </div>
         <div class="payment-methods">
             <input 
                 type="text" 
@@ -381,5 +418,53 @@
     
     .danger:hover {
         background-color: #c82333;
+    }
+
+    .aliases-input {
+        margin: 1rem 0;
+    }
+
+    .alias-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .alias-tag {
+        background-color: #e9ecef;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .remove-alias {
+        background: none;
+        border: none;
+        color: #dc3545;
+        padding: 0 0.25rem;
+        cursor: pointer;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    .remove-alias:hover {
+        color: #c82333;
+    }
+
+    .alias-add {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .alias-add input {
+        flex: 1;
+    }
+
+    .alias-add button {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.9rem;
     }
 </style>
