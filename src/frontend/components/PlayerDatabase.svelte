@@ -8,6 +8,8 @@
     let successMessage = '';
     let loading = false;
     let aliasInput = '';
+    let editingPlayer = null;
+    let isEditing = false;
     
     let newPlayer = {
         tag: '',
@@ -68,26 +70,70 @@
 
     async function addPlayer() {
         if (!newPlayer.tag) return;
+        
         try {
-            const response = await fetch('/api/players', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newPlayer)
-            });
-            if (!response.ok) throw new Error('Failed to add player');
+            const existingPlayer = players.find(p => 
+                p.tag.toLowerCase() === newPlayer.tag.toLowerCase()
+            );
+
+            if (existingPlayer) {
+                const response = await fetch(`/api/players/${encodeURIComponent(existingPlayer.tag)}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...existingPlayer,
+                        paymentMethods: newPlayer.paymentMethods,
+                        aliases: newPlayer.aliases,
+                        notes: newPlayer.notes
+                    })
+                });
+                if (!response.ok) throw new Error('Failed to update player');
+                successMessage = 'Player updated successfully';
+            } else {
+                const response = await fetch('/api/players', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newPlayer)
+                });
+                if (!response.ok) throw new Error('Failed to add player');
+                successMessage = 'Player added successfully';
+            }
             
             await loadPlayers();
-            newPlayer = {
-                tag: '',
-                aliases: [],
-                paymentMethods: { venmo: '', paypal: '', zelle: '' },
-                notes: ''
-            };
-            successMessage = 'Player added successfully';
+            clearForm();
             setTimeout(() => successMessage = '', 3000);
         } catch (error) {
-            console.error('Failed to add player:', error);
+            console.error('Failed to save player:', error);
+            importError = error.message;
+            setTimeout(() => importError = '', 3000);
         }
+    }
+
+    function clearForm() {
+        newPlayer = {
+            tag: '',
+            aliases: [],
+            paymentMethods: { venmo: '', paypal: '', zelle: '' },
+            notes: ''
+        };
+        aliasInput = '';
+        isEditing = false;
+        editingPlayer = null;
+    }
+
+    function startEditing(player) {
+        isEditing = true;
+        editingPlayer = player;
+        newPlayer = {
+            tag: player.tag,
+            aliases: [...player.aliases],
+            paymentMethods: {
+                venmo: player.paymentMethods.venmo || '',
+                paypal: player.paymentMethods.paypal || '',
+                zelle: player.paymentMethods.zelle || ''
+            },
+            notes: player.notes || ''
+        };
     }
 
     async function deletePlayer(tag) {
@@ -187,7 +233,7 @@
     </div>
 
     <div class="add-player">
-        <h3>Add New Player</h3>
+        <h3>{isEditing ? 'Edit Player' : 'Add New Player'}</h3>
         <input 
             type="text" 
             bind:value={newPlayer.tag} 
@@ -251,7 +297,16 @@
             placeholder="Notes"
             rows="3"
         ></textarea>
-        <button on:click={addPlayer}>Add Player</button>
+        <div class="form-buttons">
+            <button on:click={addPlayer}>
+                {isEditing ? 'Save Changes' : 'Add Player'}
+            </button>
+            {#if isEditing}
+                <button class="cancel-button" on:click={clearForm}>
+                    Cancel
+                </button>
+            {/if}
+        </div>
     </div>
 
     <div class="player-list">
@@ -260,12 +315,20 @@
             <div class="player-card">
                 <div class="player-header">
                     <h4>{player.tag}</h4>
-                    <button 
-                        class="delete-button" 
-                        on:click={() => deletePlayer(player.tag)}
-                    >
-                        ×
-                    </button>
+                    <div class="player-actions">
+                        <button 
+                            class="edit-button" 
+                            on:click={() => startEditing(player)}
+                        >
+                            Edit
+                        </button>
+                        <button 
+                            class="delete-button" 
+                            on:click={() => deletePlayer(player.tag)}
+                        >
+                            ×
+                        </button>
+                    </div>
                 </div>
                 {#if player.aliases?.length}
                     <div class="aliases">
@@ -409,6 +472,38 @@
 
     button:hover {
         background-color: #45a049;
+    }
+
+    .player-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .edit-button {
+        background-color: #ffc107;
+        color: #000;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .edit-button:hover {
+        background-color: #e0a800;
+    }
+
+    .cancel-button {
+        background-color: #6c757d;
+        margin-left: 0.5rem;
+    }
+
+    .cancel-button:hover {
+        background-color: #5a6268;
+    }
+
+    .form-buttons {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
     }
 
     .danger {
