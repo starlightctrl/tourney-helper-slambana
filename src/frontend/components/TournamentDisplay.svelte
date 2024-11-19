@@ -172,14 +172,15 @@
                                         </div>
                                         {#if eventFees[event.name]}
                                             <div class="payment-info">
-                                                {@const paymentInfo = getPlayerPaymentInfo(participant.gamerTag)}
-                                                {#if paymentInfo}
-                                                    {#each paymentInfo as method}
-                                                        <div class="payment-method">{method}</div>
-                                                    {/each}
-                                                {:else}
-                                                    <div class="no-payment">No payment info available</div>
-                                                {/if}
+                                                {#let paymentInfo = getPlayerPaymentInfo(participant.gamerTag)}
+                                                    {#if paymentInfo}
+                                                        {#each paymentInfo as method}
+                                                            <div class="payment-method">{method}</div>
+                                                        {/each}
+                                                    {:else}
+                                                        <div class="no-payment">No payment info available</div>
+                                                    {/if}
+                                                {/let}
                                             </div>
                                         {/if}
                                     </div>
