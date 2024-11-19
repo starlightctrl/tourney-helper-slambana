@@ -18,6 +18,30 @@ router.get('/tournament/:slug', async (req, res) => {
     }
 });
 
+// Add new route for clearing database
+router.delete('/players/all', async (req, res) => {
+    console.log('Clear database route hit');
+    try {
+        console.log('Starting database clear operation');
+        const beforeCount = (await playerDb.getAllPlayers()).length;
+        console.log('Players before clear:', beforeCount);
+        
+        await playerDb.clearDatabase();
+        
+        const afterCount = (await playerDb.getAllPlayers()).length;
+        console.log('Players after clear:', afterCount);
+        
+        res.json({ 
+            message: 'Database cleared successfully',
+            beforeCount,
+            afterCount
+        });
+    } catch (error) {
+        console.error('Error clearing database:', error);
+        res.status(500).json({ error: error.message || 'Failed to clear database' });
+    }
+});
+
 router.get('/players', async (req, res) => {
     try {
         const players = await playerDb.getAllPlayers();
@@ -128,33 +152,5 @@ router.post('/players/import', upload.single('file'), async (req, res) => {
     }
 });
 
-// Add new route for clearing database
-router.delete('/players/all', async (req, res) => {
-    console.log('Clear database route hit');
-    try {
-        console.log('Starting database clear operation');
-        const beforeCount = (await playerDb.getAllPlayers()).length;
-        console.log('Players before clear:', beforeCount);
-        
-        await playerDb.clearDatabase();
-        
-        const afterCount = (await playerDb.getAllPlayers()).length;
-        console.log('Players after clear:', afterCount);
-        
-        // Verify the database is actually empty
-        const currentPlayers = await playerDb.getAllPlayers();
-        console.log('Current players after clear:', currentPlayers);
-        
-        res.json({ 
-            message: 'Database cleared successfully',
-            beforeCount,
-            afterCount,
-            currentPlayers
-        });
-    } catch (error) {
-        console.error('Error clearing database:', error);
-        res.status(500).json({ error: error.message || 'Failed to clear database' });
-    }
-});
 
 export default router;
