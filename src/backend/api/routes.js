@@ -23,6 +23,7 @@ router.get('/players', async (req, res) => {
         const players = await playerDb.getAllPlayers();
         res.json(players);
     } catch (error) {
+        console.error('Import error:', error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -67,6 +68,7 @@ router.post('/players/import', upload.single('file'), async (req, res) => {
 
         // Get existing players
         const existingPlayers = await playerDb.getAllPlayers();
+        let importCount = 0;  // Add counter for imported players
         
         // Process and merge the data
         for (const row of data) {
@@ -92,12 +94,14 @@ router.post('/players/import', upload.single('file'), async (req, res) => {
                     zelle: playerData.paymentMethods.zelle || existingPlayer.paymentMethods.zelle
                 };
                 await playerDb.updatePlayer(existingPlayer.tag, existingPlayer);
+                importCount++;
             } else {
                 await playerDb.addPlayer(playerData);
+                importCount++;
             }
         }
 
-        res.json({ message: 'Import successful', count: players.length });
+        res.json({ message: 'Import successful', count: importCount });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
