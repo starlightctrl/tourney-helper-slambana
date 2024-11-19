@@ -36,6 +36,27 @@
         }
     }
 
+    async function clearDatabase() {
+        if (!confirm('Are you sure you want to clear the entire database? This cannot be undone.')) {
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/players/all', {
+                method: 'DELETE'
+            });
+            
+            if (!response.ok) throw new Error('Failed to clear database');
+            
+            await loadPlayers();
+            successMessage = 'Database cleared successfully';
+            setTimeout(() => successMessage = '', 3000);
+        } catch (error) {
+            console.error('Failed to clear database:', error);
+            importError = 'Failed to clear database';
+        }
+    }
+
     async function addPlayer() {
         if (!newPlayer.tag) return;
         try {
@@ -148,6 +169,9 @@
             />
             <button on:click={() => fileInput.click()}>
                 Import Players
+            </button>
+            <button class="danger" on:click={clearDatabase}>
+                Clear Database
             </button>
         </div>
     </div>
@@ -339,5 +363,14 @@
 
     button:hover {
         background-color: #45a049;
+    }
+
+    .danger {
+        background-color: #dc3545;
+        margin-left: 1rem;
+    }
+    
+    .danger:hover {
+        background-color: #c82333;
     }
 </style>

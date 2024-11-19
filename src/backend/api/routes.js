@@ -65,24 +65,49 @@ router.post('/players/import', upload.single('file'), async (req, res) => {
         const sheet = workbook.Sheets[sheetName];
         const data = xlsx.utils.sheet_to_json(sheet);
 
-        // Process and validate the data
-        const players = data.map(row => ({
-            tag: row.Tag || row.tag,
-            aliases: row.Aliases ? row.Aliases.split(',').map(a => a.trim()) : [],
-            paymentMethods: {
-                venmo: row.Venmo || row.venmo || '',
-                paypal: row.PayPal || row.Paypal || row.paypal || '',
-                zelle: row.Zelle || row.zelle || ''
-            },
-            notes: row.Notes || row.notes || ''
-        }));
+        // Get existing players
+        const existingPlayers = await playerDb.getAllPlayers();
+        
+        // Process and merge the data
+        for (const row of data) {
+            const playerData = {
+                tag: row.Tag,
+                aliases: [],
+                paymentMethods: {
+                    venmo: row.Venmo || '',
+                    paypal: row.Paypal || '',
+                    zelle: row.Zelle || ''
+                },
+                notes: row.Notes || ''
+            };
 
-        // Add each player to the database
-        for (const player of players) {
-            await playerDb.addPlayer(player);
+            // Check if player already exists
+            const existingPlayer = existingPlayers.find(p => p.tag.toLowerCase() === playerData.tag.toLowerCase());
+            
+            if (existingPlayer) {
+                // Merge payment methods
+                existingPlayer.paymentMethods = {
+                    venmo: playerData.paymentMethods.venmo || existingPlayer.paymentMethods.venmo,
+                    paypal: playerData.paymentMethods.paypal || existingPlayer.paymentMethods.paypal,
+                    zelle: playerData.paymentMethods.zelle || existingPlayer.paymentMethods.zelle
+                };
+                await playerDb.updatePlayer(existingPlayer.tag, existingPlayer);
+            } else {
+                await playerDb.addPlayer(playerData);
+            }
         }
 
         res.json({ message: 'Import successful', count: players.length });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Add new route for clearing database
+router.delete('/players/all', async (req, res) => {
+    try {
+        await playerDb.clearDatabase();
+        res.json({ message: 'Database cleared successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
