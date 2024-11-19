@@ -26,7 +26,9 @@ class PlayerDatabase {
     }
 
     async save() {
+        console.log('Saving database with players:', this.players.length);
         await fs.writeFile(DB_PATH, JSON.stringify(this.players, null, 2));
+        console.log('Database saved successfully');
     }
 
     async addPlayer(player) {
@@ -58,12 +60,16 @@ class PlayerDatabase {
 
     async clearDatabase() {
         if (!this.initialized) await this.initialize();
+        console.log('Before clear - Players count:', this.players.length);
         this.players = [];  // Direct reset
+        console.log('After clear - Players count:', this.players.length);
         await this.save();
+        console.log('Database clear operation completed');
     }
 
     async getAllPlayers() {
         if (!this.initialized) await this.initialize();
+        console.log('Getting all players, count:', this.players.length);
         return this.players;
     }
 

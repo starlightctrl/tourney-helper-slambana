@@ -131,10 +131,20 @@ router.post('/players/import', upload.single('file'), async (req, res) => {
 // Add new route for clearing database
 router.delete('/players/all', async (req, res) => {
     try {
-        console.log('Attempting to clear database...');
+        console.log('Starting database clear operation');
+        const beforeCount = (await playerDb.getAllPlayers()).length;
+        console.log('Players before clear:', beforeCount);
+        
         await playerDb.clearDatabase();
-        console.log('Database cleared successfully');
-        res.json({ message: 'Database cleared successfully' });
+        
+        const afterCount = (await playerDb.getAllPlayers()).length;
+        console.log('Players after clear:', afterCount);
+        
+        res.json({ 
+            message: 'Database cleared successfully',
+            beforeCount,
+            afterCount
+        });
     } catch (error) {
         console.error('Error clearing database:', error);
         res.status(500).json({ error: error.message || 'Failed to clear database' });
