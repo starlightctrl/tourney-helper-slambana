@@ -2,6 +2,19 @@
     export let tournamentSlug = '';
     let tournamentData = null;
     let error = null;
+    let eventFees = {};  // Store fees for each event
+
+    function calculatePrizePool(event) {
+        const fee = eventFees[event.name] || 0;
+        const totalParticipants = getTotalParticipants(event);
+        return fee * totalParticipants;
+    }
+
+    function calculatePrizePerParticipant(event) {
+        const prizePool = calculatePrizePool(event);
+        const prizeWinners = getPrizeWinningPlacements(event.numEntrants);
+        return prizePool / prizeWinners;  // Simple even split
+    }
 
     function getTotalParticipants(event) {
         // If it's a team event, multiply numEntrants by roster size
@@ -57,9 +70,22 @@
             <div class="event">
                 <h3>{event.name}</h3>
                 <p>Entrants: {getTotalParticipants(event)}</p>
-                {#if event.entrantFees && event.entrantFees.amount}
-                    <p>Entry Fee: ${event.entrantFees.amount / 100}</p>
-                {/if}
+                <div class="fee-calculator">
+                    <label>
+                        Entry Fee per Player: $
+                        <input 
+                            type="number" 
+                            bind:value={eventFees[event.name]} 
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                        />
+                    </label>
+                    {#if eventFees[event.name]}
+                        <p>Total Prize Pool: ${calculatePrizePool(event).toFixed(2)}</p>
+                        <p>Prize per Winner: ${calculatePrizePerParticipant(event).toFixed(2)}</p>
+                    {/if}
+                </div>
                 <div class="standings">
                     <h4>Prize Winners:</h4>
                     <ul>
@@ -101,6 +127,23 @@
         border: 1px solid red;
         border-radius: 4px;
         margin: 1rem 0;
+    }
+
+    .fee-calculator {
+        margin: 1rem 0;
+        padding: 0.5rem;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+    }
+
+    .fee-calculator input {
+        width: 80px;
+        margin-left: 0.5rem;
+        padding: 0.25rem;
+    }
+
+    .fee-calculator p {
+        margin: 0.5rem 0;
     }
 
     ul {
