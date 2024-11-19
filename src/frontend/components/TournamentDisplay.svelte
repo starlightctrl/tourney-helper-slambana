@@ -5,7 +5,7 @@
 
     function getTotalParticipants(event) {
         // If it's a team event, multiply numEntrants by roster size
-        return event.teamRosterSize ? event.numEntrants * event.teamRosterSize : event.numEntrants;
+        return event.teamRosterSize ? event.numEntrants * event.teamRosterSize.maxPlayers : event.numEntrants;
     }
 
     function getPrizeWinningPlacements(numEntrants) {

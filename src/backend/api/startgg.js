@@ -55,7 +55,9 @@ class StartGGAPI {
                     events {
                         name
                         numEntrants
-                        teamRosterSize
+                        teamRosterSize {
+                            maxPlayers
+                        }
                         type
                         standings(query: {
                             page: 1
