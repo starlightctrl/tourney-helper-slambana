@@ -54,6 +54,7 @@ class PlayerDatabase {
     }
 
     async clearDatabase() {
+        if (!this.initialized) await this.initialize();
         this.players = [];
         await this.save();
     }

@@ -46,14 +46,18 @@
                 method: 'DELETE'
             });
             
-            if (!response.ok) throw new Error('Failed to clear database');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to clear database');
+            }
             
             await loadPlayers();
             successMessage = 'Database cleared successfully';
             setTimeout(() => successMessage = '', 3000);
         } catch (error) {
             console.error('Failed to clear database:', error);
-            importError = 'Failed to clear database';
+            importError = error.message || 'Failed to clear database';
+            setTimeout(() => importError = '', 3000);
         }
     }
 
