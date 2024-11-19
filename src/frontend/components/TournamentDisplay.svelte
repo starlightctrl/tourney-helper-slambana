@@ -19,11 +19,16 @@
     async function fetchTournamentData() {
         try {
             const encodedSlug = encodeURIComponent(tournamentSlug);
+            console.log('Fetching tournament:', encodedSlug); // Debug log
             const response = await fetch(`/api/tournament/${encodedSlug}`);
-            if (!response.ok) throw new Error('Failed to fetch tournament data');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Failed to fetch tournament data: ${errorText}`);
+            }
             tournamentData = await response.json();
             error = null;
         } catch (e) {
+            console.error('Fetch error:', e); // Debug log
             error = e.message;
             tournamentData = null;
         }
