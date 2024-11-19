@@ -3,6 +3,11 @@
     let tournamentData = null;
     let error = null;
 
+    function getTotalParticipants(event) {
+        // If it's a team event, multiply numEntrants by roster size
+        return event.teamRosterSize ? event.numEntrants * event.teamRosterSize : event.numEntrants;
+    }
+
     function getPrizeWinningPlacements(numEntrants) {
         if (numEntrants < 9) return 2;
         if (numEntrants < 17) return 3;
@@ -43,14 +48,16 @@
         {#each tournamentData.tournament.events as event}
             <div class="event">
                 <h3>{event.name}</h3>
-                <p>Entrants: {event.numEntrants}</p>
+                <p>Entrants: {getTotalParticipants(event)}</p>
                 <div class="standings">
-                    <h4>Top 8:</h4>
+                    <h4>Prize Winners:</h4>
                     <ul>
                         {#each event.standings.nodes.slice(0, getPrizeWinningPlacements(event.numEntrants)) as standing}
-                            <li>
-                                {standing.placement}. {standing.entrant.participants[0].gamerTag}
-                            </li>
+                            {#each standing.entrant.participants as participant}
+                                <li>
+                                    {standing.placement}. {participant.gamerTag}
+                                </li>
+                            {/each}
                         {/each}
                     </ul>
                 </div>
