@@ -5,9 +5,10 @@
   "main": "src/backend/server.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "svelte-kit dev",
+    "dev:frontend": "vite dev",
     "dev:backend": "nodemon src/backend/server.js",
-    "build": "svelte-kit build",
+    "build": "vite build",
+    "preview": "vite preview",
     "start": "node src/backend/server.js"
   },
   "dependencies": {
@@ -19,10 +20,12 @@
     "svelte": "^4.2.0"
   },
   "devDependencies": {
+    "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.25.0",
     "@types/node": "^20.6.0",
     "concurrently": "^8.2.1",
     "nodemon": "^3.0.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9"
   }
 }
