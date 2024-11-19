@@ -57,6 +57,9 @@
             <div class="event">
                 <h3>{event.name}</h3>
                 <p>Entrants: {getTotalParticipants(event)}</p>
+                {#if event.entrantFee}
+                    <p>Entry Fee: ${event.entrantFee / 100}</p>
+                {/if}
                 <div class="standings">
                     <h4>Prize Winners:</h4>
                     <ul>

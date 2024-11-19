@@ -59,6 +59,7 @@ class StartGGAPI {
                             maxPlayers
                         }
                         type
+                        entrantFee
                         standings(query: {
                             page: 1
                             perPage: 8
