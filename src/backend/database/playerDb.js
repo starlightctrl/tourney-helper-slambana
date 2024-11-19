@@ -48,15 +48,18 @@ class PlayerDatabase {
     async deletePlayer(tag) {
         if (!this.initialized) await this.initialize();
         const index = this.players.findIndex(p => p.tag === tag);
-        if (index === -1) throw new Error('Player not found');
+        if (index === -1) {
+            console.log(`Player ${tag} not found, skipping deletion`);
+            return; // Just return instead of throwing error
+        }
         this.players.splice(index, 1);
         await this.save();
     }
 
     async clearDatabase() {
         if (!this.initialized) await this.initialize();
-        this.players = [];  // Simply reset to empty array
-        await this.save(); // Save the empty array to file
+        this.players = [];  // Direct reset
+        await this.save();
     }
 
     async getAllPlayers() {
