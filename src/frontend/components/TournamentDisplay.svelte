@@ -88,6 +88,18 @@
         return 8; // Includes two 5th places and two 7th places
     }
 
+    function getPlayerPaymentInfo(gamerTag) {
+        const player = playerDatabase[gamerTag.toLowerCase()];
+        if (!player) return null;
+        
+        const methods = [];
+        if (player.paymentMethods.venmo) methods.push(`Venmo: ${player.paymentMethods.venmo}`);
+        if (player.paymentMethods.paypal) methods.push(`PayPal: ${player.paymentMethods.paypal}`);
+        if (player.paymentMethods.zelle) methods.push(`Zelle: ${player.paymentMethods.zelle}`);
+        
+        return methods.length > 0 ? methods : null;
+    }
+
     async function fetchTournamentData() {
         try {
             const encodedSlug = encodeURIComponent(tournamentSlug);
@@ -151,10 +163,26 @@
                         {#each event.standings.nodes.slice(0, getPrizeWinningPlacements(event.numEntrants)) as standing}
                             {#each standing.entrant.participants as participant}
                                 <li>
-                                    {standing.placement}. {participant.gamerTag} 
-                                    {#if eventFees[event.name]}
-                                        - ${getPrizeForPlacement(event, standing.placement).toFixed(2)}
-                                    {/if}
+                                    <div class="standing-entry">
+                                        <div class="placement-info">
+                                            {standing.placement}. {participant.gamerTag} 
+                                            {#if eventFees[event.name]}
+                                                - ${getPrizeForPlacement(event, standing.placement).toFixed(2)}
+                                            {/if}
+                                        </div>
+                                        {#if eventFees[event.name]}
+                                            <div class="payment-info">
+                                                {@const paymentInfo = getPlayerPaymentInfo(participant.gamerTag)}
+                                                {#if paymentInfo}
+                                                    {#each paymentInfo as method}
+                                                        <div class="payment-method">{method}</div>
+                                                    {/each}
+                                                {:else}
+                                                    <div class="no-payment">No payment info available</div>
+                                                {/if}
+                                            </div>
+                                        {/if}
+                                    </div>
                                 </li>
                             {/each}
                         {/each}
@@ -215,5 +243,31 @@
 
     li {
         padding: 0.5rem 0;
+    }
+
+    .standing-entry {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+    }
+
+    .placement-info {
+        font-weight: bold;
+    }
+
+    .payment-info {
+        font-size: 0.9rem;
+        color: #666;
+        margin-left: 1rem;
+    }
+
+    .payment-method {
+        margin: 0.2rem 0;
+    }
+
+    .no-payment {
+        color: #999;
+        font-style: italic;
     }
 </style>
