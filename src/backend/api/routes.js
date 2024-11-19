@@ -68,40 +68,61 @@ router.post('/players/import', upload.single('file'), async (req, res) => {
 
         // Get existing players
         const existingPlayers = await playerDb.getAllPlayers();
-        let importCount = 0;  // Add counter for imported players
+        let importCount = { new: 0, updated: 0 };  // Track new vs updated players
         
         // Process and merge the data
         for (const row of data) {
+            // Skip if no Tag provided
+            if (!row.Tag) continue;
+
             const playerData = {
-                tag: row.Tag,
+                tag: row.Tag.trim(), // Trim whitespace
                 aliases: [],
                 paymentMethods: {
-                    venmo: row.Venmo || '',
-                    paypal: row.Paypal || '',
-                    zelle: row.Zelle || ''
+                    venmo: (row.Venmo || '').trim(),
+                    paypal: (row.Paypal || '').trim(),
+                    zelle: (row.Zelle || '').trim()
                 },
-                notes: row.Notes || ''
+                notes: (row.Notes || '').trim()
             };
 
-            // Check if player already exists
-            const existingPlayer = existingPlayers.find(p => p.tag.toLowerCase() === playerData.tag.toLowerCase());
+            // Check if player already exists (case-insensitive)
+            const existingPlayer = existingPlayers.find(p => 
+                p.tag.toLowerCase() === playerData.tag.toLowerCase()
+            );
             
             if (existingPlayer) {
-                // Merge payment methods
-                existingPlayer.paymentMethods = {
-                    venmo: playerData.paymentMethods.venmo || existingPlayer.paymentMethods.venmo,
-                    paypal: playerData.paymentMethods.paypal || existingPlayer.paymentMethods.paypal,
-                    zelle: playerData.paymentMethods.zelle || existingPlayer.paymentMethods.zelle
+                // Only update if there's new payment information
+                const updatedPlayer = {
+                    ...existingPlayer,
+                    paymentMethods: {
+                        venmo: playerData.paymentMethods.venmo || existingPlayer.paymentMethods.venmo,
+                        paypal: playerData.paymentMethods.paypal || existingPlayer.paymentMethods.paypal,
+                        zelle: playerData.paymentMethods.zelle || existingPlayer.paymentMethods.zelle
+                    }
                 };
-                await playerDb.updatePlayer(existingPlayer.tag, existingPlayer);
-                importCount++;
+
+                // Only update if something changed
+                if (JSON.stringify(updatedPlayer) !== JSON.stringify(existingPlayer)) {
+                    await playerDb.updatePlayer(existingPlayer.tag, updatedPlayer);
+                    importCount.updated++;
+                }
             } else {
-                await playerDb.addPlayer(playerData);
-                importCount++;
+                // Only add if we have at least one payment method
+                if (playerData.paymentMethods.venmo || 
+                    playerData.paymentMethods.paypal || 
+                    playerData.paymentMethods.zelle) {
+                    await playerDb.addPlayer(playerData);
+                    importCount.new++;
+                }
             }
         }
 
-        res.json({ message: 'Import successful', count: importCount });
+        res.json({ 
+            message: 'Import successful', 
+            newPlayers: importCount.new,
+            updatedPlayers: importCount.updated
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

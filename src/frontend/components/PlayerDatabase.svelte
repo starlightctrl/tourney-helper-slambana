@@ -118,8 +118,9 @@
                 throw new Error(error);
             }
 
+            const result = await response.json();
             await loadPlayers();
-            successMessage = 'Players imported successfully';
+            successMessage = `Import successful: ${result.newPlayers} new players added, ${result.updatedPlayers} players updated`;
             setTimeout(() => successMessage = '', 3000);
             event.target.value = ''; // Reset file input
         } catch (error) {
