@@ -42,6 +42,7 @@
         }
         
         try {
+            console.log('Attempting to clear database...');
             const response = await fetch('/api/players/all', {
                 method: 'DELETE'
             });
@@ -50,6 +51,9 @@
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Failed to clear database');
             }
+            
+            const result = await response.json();
+            console.log('Clear database response:', result);
             
             await loadPlayers();
             successMessage = 'Database cleared successfully';

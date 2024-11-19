@@ -61,9 +61,19 @@ class PlayerDatabase {
     async clearDatabase() {
         if (!this.initialized) await this.initialize();
         console.log('Before clear - Players count:', this.players.length);
+        console.log('Current players before clear:', JSON.stringify(this.players));
+        
         this.players = [];  // Direct reset
+        
         console.log('After clear - Players count:', this.players.length);
+        console.log('Current players after clear:', JSON.stringify(this.players));
+        
         await this.save();
+        
+        // Verify the file was actually cleared
+        const fileContents = await fs.readFile(DB_PATH, 'utf8');
+        console.log('Database file contents after save:', fileContents);
+        
         console.log('Database clear operation completed');
     }
 
