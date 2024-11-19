@@ -1,0 +1,27 @@
+{
+  "name": "tourney-helper",
+  "version": "1.0.0",
+  "description": "A tournament management tool that integrates with start.gg to help track player information and payments.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@sveltejs/kit": "^2.8.1",
+    "@types/node": "^22.9.1",
+    "concurrently": "^9.1.0",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "graphql": "^16.9.0",
+    "node-fetch": "^2.7.0",
+    "svelte": "^5.2.4"
+  }
+}
