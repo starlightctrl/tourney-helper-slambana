@@ -70,11 +70,11 @@ router.post('/players/import', upload.single('file'), async (req, res) => {
             tag: row.Tag || row.tag,
             aliases: row.Aliases ? row.Aliases.split(',').map(a => a.trim()) : [],
             paymentMethods: {
-                venmo: row.Venmo || '',
-                paypal: row.PayPal || '',
-                zelle: row.Zelle || ''
+                venmo: row.Venmo || row.venmo || '',
+                paypal: row.PayPal || row.Paypal || row.paypal || '',
+                zelle: row.Zelle || row.zelle || ''
             },
-            notes: row.Notes || ''
+            notes: row.Notes || row.notes || ''
         }));
 
         // Add each player to the database
