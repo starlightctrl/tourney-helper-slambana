@@ -30,14 +30,16 @@
 </script>
 
 <div class="tournament-display">
-    <div class="search-section">
+    <form class="search-section" on:submit|preventDefault={fetchTournamentData}>
         <input 
             type="text" 
             bind:value={tournamentSlug} 
             placeholder="Enter tournament slug"
+            autocomplete="on"
+            name="tournament-slug"
         />
-        <button on:click={fetchTournamentData}>Load Tournament</button>
-    </div>
+        <button type="submit">Load Tournament</button>
+    </form>
 
     {#if error}
         <div class="error">{error}</div>
