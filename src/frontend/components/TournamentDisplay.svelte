@@ -3,6 +3,26 @@
     let tournamentData = null;
     let error = null;
     let eventFees = {};  // Store fees for each event
+    let playerDatabase = {};  // Will store player info keyed by tag
+
+    async function loadPlayerDatabase() {
+        try {
+            const response = await fetch('/api/players');
+            if (!response.ok) throw new Error('Failed to load player database');
+            const players = await response.json();
+            // Create a case-insensitive lookup object
+            playerDatabase = players.reduce((acc, player) => {
+                acc[player.tag.toLowerCase()] = player;
+                // Also add aliases as keys pointing to the same player
+                player.aliases.forEach(alias => {
+                    acc[alias.toLowerCase()] = player;
+                });
+                return acc;
+            }, {});
+        } catch (error) {
+            console.error('Failed to load player database:', error);
+        }
+    }
 
     function calculatePrizePool(event) {
         const fee = eventFees[event.name] || 0;
@@ -79,6 +99,7 @@
             }
             tournamentData = await response.json();
             error = null;
+            await loadPlayerDatabase();
         } catch (e) {
             console.error('Fetch error:', e); // Debug log
             error = e.message;
