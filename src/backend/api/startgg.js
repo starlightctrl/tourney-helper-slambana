@@ -63,6 +63,9 @@ class StartGGAPI {
                                 placement
                                 entrant {
                                     name
+                                    participants {
+                                        gamerTag
+                                    }
                                 }
                             }
                         }

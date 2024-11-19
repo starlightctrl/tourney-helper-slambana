@@ -3,6 +3,14 @@
     let tournamentData = null;
     let error = null;
 
+    function getPrizeWinningPlacements(numEntrants) {
+        if (numEntrants < 9) return 2;
+        if (numEntrants < 17) return 3;
+        if (numEntrants < 29) return 4;
+        if (numEntrants < 40) return 6; // Includes two 5th places
+        return 8; // Includes two 5th places and two 7th places
+    }
+
     async function fetchTournamentData() {
         try {
             const response = await fetch(`/api/tournament/${tournamentSlug}`);
@@ -39,9 +47,9 @@
                 <div class="standings">
                     <h4>Top 8:</h4>
                     <ul>
-                        {#each event.standings.nodes as standing}
+                        {#each event.standings.nodes.slice(0, getPrizeWinningPlacements(event.numEntrants)) as standing}
                             <li>
-                                {standing.placement}. {standing.entrant.name}
+                                {standing.placement}. {standing.entrant.participants[0].gamerTag}
                             </li>
                         {/each}
                     </ul>
