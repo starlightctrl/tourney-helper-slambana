@@ -10,10 +10,52 @@
         return fee * totalParticipants;
     }
 
-    function calculatePrizePerParticipant(event) {
+    function getPrizeForPlacement(event, placement) {
+        if (!eventFees[event.name]) return 0;
+        
         const prizePool = calculatePrizePool(event);
-        const prizeWinners = getPrizeWinningPlacements(event.numEntrants);
-        return prizePool / prizeWinners;  // Simple even split
+        const entrants = event.numEntrants;
+        
+        // Prize splits based on number of entrants
+        let percentage = 0;
+        
+        if (entrants <= 8) {
+            // 70-30 split
+            if (placement === 1) percentage = 0.70;
+            else if (placement === 2) percentage = 0.30;
+        }
+        else if (entrants <= 16) {
+            // 60-30-10 split
+            if (placement === 1) percentage = 0.60;
+            else if (placement === 2) percentage = 0.30;
+            else if (placement === 3) percentage = 0.10;
+        }
+        else if (entrants <= 28) {
+            // 50-25-15-10 split
+            if (placement === 1) percentage = 0.50;
+            else if (placement === 2) percentage = 0.25;
+            else if (placement === 3) percentage = 0.15;
+            else if (placement === 4) percentage = 0.10;
+        }
+        else if (entrants <= 39) {
+            // 40-25-15-10-5-5 split
+            if (placement === 1) percentage = 0.40;
+            else if (placement === 2) percentage = 0.25;
+            else if (placement === 3) percentage = 0.15;
+            else if (placement === 4) percentage = 0.10;
+            else if (placement === 5) percentage = 0.05; // Two 5th places split 10%
+        }
+        else {
+            // 40-20-15-10-5-5-2.5-2.5 split
+            if (placement === 1) percentage = 0.40;
+            else if (placement === 2) percentage = 0.20;
+            else if (placement === 3) percentage = 0.15;
+            else if (placement === 4) percentage = 0.10;
+            else if (placement === 5) percentage = 0.05; // Two 5th places split 10%
+            else if (placement === 7) percentage = 0.025; // Two 7th places split 5%
+        }
+        
+        return prizePool * percentage;
     }
 
     function getTotalParticipants(event) {
@@ -83,7 +125,6 @@
                     </label>
                     {#if eventFees[event.name]}
                         <p>Total Prize Pool: ${calculatePrizePool(event).toFixed(2)}</p>
-                        <p>Prize per Winner: ${calculatePrizePerParticipant(event).toFixed(2)}</p>
                     {/if}
                 </div>
                 <div class="standings">
@@ -92,7 +133,10 @@
                         {#each event.standings.nodes.slice(0, getPrizeWinningPlacements(event.numEntrants)) as standing}
                             {#each standing.entrant.participants as participant}
                                 <li>
-                                    {standing.placement}. {participant.gamerTag}
+                                    {standing.placement}. {participant.gamerTag} 
+                                    {#if eventFees[event.name]}
+                                        - ${getPrizeForPlacement(event, standing.placement).toFixed(2)}
+                                    {/if}
                                 </li>
                             {/each}
                         {/each}
