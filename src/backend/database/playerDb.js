@@ -55,8 +55,8 @@ class PlayerDatabase {
 
     async clearDatabase() {
         if (!this.initialized) await this.initialize();
-        this.players = [];
-        await this.save();
+        this.players = [];  // Simply reset to empty array
+        await this.save(); // Save the empty array to file
     }
 
     async getAllPlayers() {
