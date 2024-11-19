@@ -1,6 +1,7 @@
 {
   "name": "tourney-helper",
   "version": "1.0.0",
+  "type": "module",
   "description": "Tournament management tool with start.gg integration",
   "main": "src/backend/server.js",
   "scripts": {
