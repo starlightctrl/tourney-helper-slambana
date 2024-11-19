@@ -18,7 +18,8 @@
 
     async function fetchTournamentData() {
         try {
-            const response = await fetch(`/api/tournament/${tournamentSlug}`);
+            const encodedSlug = encodeURIComponent(tournamentSlug);
+            const response = await fetch(`/api/tournament/${encodedSlug}`);
             if (!response.ok) throw new Error('Failed to fetch tournament data');
             tournamentData = await response.json();
             error = null;
