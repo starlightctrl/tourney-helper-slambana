@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import startgg from './startgg.js';
+
 const router = express.Router();
-const startgg = require('./startgg');
 
 router.get('/tournament/:slug', async (req, res) => {
     try {
@@ -11,4 +12,4 @@ router.get('/tournament/:slug', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

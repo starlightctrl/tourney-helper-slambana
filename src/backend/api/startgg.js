@@ -1,6 +1,11 @@
-const fetch = require('node-fetch');
-const fs = require('fs').promises;
-const path = require('path');
+import fetch from 'node-fetch';
+import { promises as fs } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 class StartGGAPI {
     constructor() {
@@ -70,4 +75,4 @@ class StartGGAPI {
     }
 }
 
-module.exports = new StartGGAPI();
+export default new StartGGAPI();
