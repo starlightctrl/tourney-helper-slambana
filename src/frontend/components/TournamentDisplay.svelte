@@ -223,7 +223,7 @@
                         <span class="page-info">Page {currentPage}</span>
                         <button 
                             on:click={nextPage} 
-                            disabled={!pageInfo?.hasNextPage}
+                            disabled={!pageInfo?.totalPages || currentPage >= pageInfo.totalPages}
                         >
                             Next
                         </button>
