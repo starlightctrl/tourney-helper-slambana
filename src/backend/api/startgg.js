@@ -56,7 +56,9 @@ class StartGGAPI {
                         name: "slambana",
                         videogameIds: [1]
                     },
-                    sort: START_AT_DESC
+                    page: 1,
+                    sortBy: "startAt",
+                    sortDesc: true
                 }) {
                     nodes {
                         name
