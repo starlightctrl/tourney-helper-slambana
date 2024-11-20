@@ -14,7 +14,7 @@
             if (!response.ok) throw new Error('Failed to load player database');
             const players = await response.json();
             // Create a case-insensitive lookup object
-            playerDatabase = players.reduce((acc, player) => {
+            const newPlayerDatabase = players.reduce((acc, player) => {
                 acc[player.tag.toLowerCase()] = player;
                 // Also add aliases as keys pointing to the same player
                 player.aliases.forEach(alias => {
@@ -22,6 +22,12 @@
                 });
                 return acc;
             }, {});
+            
+            // Update the playerDatabase after all processing is complete
+            playerDatabase = newPlayerDatabase;
+            
+            // Force a re-render
+            tournamentData = { ...tournamentData };
         } catch (error) {
             console.error('Failed to load player database:', error);
         }
