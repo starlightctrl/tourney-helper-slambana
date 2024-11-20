@@ -51,11 +51,12 @@ class StartGGAPI {
         const query = `
             query SlambanaQuery {
                 tournaments(query: {
-                    perPage: 10,
+                    perPage: 20,
                     filter: {
-                        name: "Slambana",
-                        videogameIds: [1],
-                        upcoming: true
+                        search: {
+                            searchString: "Slambana"
+                        },
+                        videogameIds: [1]
                     }
                 }) {
                     nodes {
