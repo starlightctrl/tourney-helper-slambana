@@ -589,7 +589,6 @@
 
     .danger {
         background-color: #dc3545;
-        margin-left: 1rem;
     }
     
     .danger:hover {
