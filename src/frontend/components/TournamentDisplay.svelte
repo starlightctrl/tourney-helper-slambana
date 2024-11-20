@@ -2,7 +2,9 @@
     import { playerDatabaseVersion } from '../stores/playerStore';
     export let tournamentSlug = '';
     
-    $: $playerDatabaseVersion, loadPlayerDatabase(); // Reloads whenever store changes
+    $: if ($playerDatabaseVersion) {
+        loadPlayerDatabase(); // Only reload when version changes
+    }
     let tournamentData = null;
     let error = null;
     let eventFees = {};  // Store fees for each event
@@ -118,9 +120,10 @@
                 const errorText = await response.text();
                 throw new Error(`Failed to fetch tournament data: ${errorText}`);
             }
-            tournamentData = await response.json();
+            const data = await response.json();
+            tournamentData = data;  // Set tournament data first
             error = null;
-            await loadPlayerDatabase();
+            await loadPlayerDatabase();  // Then load player data
         } catch (e) {
             console.error('Fetch error:', e); // Debug log
             error = e.message;
