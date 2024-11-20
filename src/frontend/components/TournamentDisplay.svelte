@@ -226,6 +226,47 @@
         --color-error: #ef4444;
         --color-text: #1e293b;
         --spacing-unit: 1rem;
+        
+        /* Font variables */
+        --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        --font-mono: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
+    }
+
+    .tournament-display {
+        font-family: var(--font-primary);
+    }
+
+    .event-header h3 {
+        font-family: var(--font-primary);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+    }
+
+    .prize-pool, 
+    .input-with-symbol input[type="number"],
+    .standing-entry .placement-info {
+        font-family: var(--font-mono);
+    }
+
+    h2, h3, h4 {
+        font-family: var(--font-primary);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+    }
+
+    input, textarea {
+        font-family: var(--font-primary);
+        font-size: 0.95rem;
+    }
+
+    input[type="number"] {
+        font-family: var(--font-mono);
+    }
+
+    button {
+        font-family: var(--font-primary);
+        font-weight: 600;
+        letter-spacing: 0.02em;
     }
 
     /* Remove spinner arrows from number inputs */

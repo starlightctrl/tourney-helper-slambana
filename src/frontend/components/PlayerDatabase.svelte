@@ -370,6 +370,47 @@
         --color-error: #ef4444;
         --color-text: #1e293b;
         --spacing-unit: 1rem;
+        
+        /* Font variables */
+        --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        --font-mono: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
+    }
+
+    .player-database {
+        font-family: var(--font-primary);
+    }
+
+    .player-card h4 {
+        font-family: var(--font-primary);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+    }
+
+    .payment-info,
+    .player-card .aliases {
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+    }
+
+    h2, h3, h4 {
+        font-family: var(--font-primary);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+    }
+
+    input, textarea {
+        font-family: var(--font-primary);
+        font-size: 0.95rem;
+    }
+
+    input[type="number"] {
+        font-family: var(--font-mono);
+    }
+
+    button {
+        font-family: var(--font-primary);
+        font-weight: 600;
+        letter-spacing: 0.02em;
     }
 
     .player-database {
