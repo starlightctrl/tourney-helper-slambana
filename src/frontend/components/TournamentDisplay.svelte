@@ -1,9 +1,17 @@
 <script>
+    import { onMount } from 'svelte';
     import { playerDatabaseVersion } from '../stores/playerStore';
     export let tournamentSlug = '';
+    export let isSlambana = false;
+    
+    let slambanaList = null;
     
     $: if ($playerDatabaseVersion) {
         loadPlayerDatabase(); // Only reload when version changes
+    }
+
+    $: if (isSlambana && !slambanaList) {
+        loadSlambanaList();
     }
     let tournamentData = null;
     let error = null;
@@ -111,6 +119,23 @@
         return methods.length > 0 ? methods : null;
     }
 
+    async function loadSlambanaList() {
+        try {
+            const response = await fetch('/api/tournament/slambana');
+            if (!response.ok) throw new Error('Failed to fetch Slambana tournaments');
+            const data = await response.json();
+            slambanaList = data.tournaments.nodes;
+        } catch (e) {
+            error = e.message;
+        }
+    }
+
+    onMount(async () => {
+        if (isSlambana) {
+            await loadSlambanaList();
+        }
+    });
+
     async function fetchTournamentData() {
         try {
             const encodedSlug = encodeURIComponent(tournamentSlug);
@@ -133,16 +158,42 @@
 </script>
 
 <div class="tournament-display">
-    <form class="search-section" on:submit|preventDefault={fetchTournamentData}>
-        <input 
-            type="text" 
-            bind:value={tournamentSlug} 
-            placeholder="Enter tournament slug"
-            autocomplete="on"
-            name="tournament-slug"
-        />
-        <button type="submit">Load Tournament</button>
-    </form>
+    {#if !isSlambana}
+        <form class="search-section" on:submit|preventDefault={fetchTournamentData}>
+            <input 
+                type="text" 
+                bind:value={tournamentSlug} 
+                placeholder="Enter tournament slug"
+                autocomplete="on"
+                name="tournament-slug"
+            />
+            <button type="submit">Load Tournament</button>
+        </form>
+    {:else}
+        <div class="slambana-tournaments">
+            {#if slambanaList}
+                <div class="tournament-list">
+                    {#each slambanaList as tournament}
+                        <button 
+                            class="tournament-item" 
+                            on:click={() => {
+                                tournamentSlug = tournament.slug;
+                                fetchTournamentData();
+                            }}
+                        >
+                            <h3>{tournament.name}</h3>
+                            <div class="tournament-details">
+                                <span class="date">{new Date(tournament.startAt * 1000).toLocaleDateString()}</span>
+                                <span class="location">{tournament.venueAddress}</span>
+                            </div>
+                        </button>
+                    {/each}
+                </div>
+            {:else}
+                <div class="loading">Loading Slambana tournaments...</div>
+            {/if}
+        </div>
+    {/if}
 
     {#if error}
         <div class="error">{error}</div>
@@ -529,6 +580,62 @@
 
     .error::before {
         content: "⚠️";
+        margin-right: 0.5rem;
+    }
+
+    .slambana-tournaments {
+        max-width: 800px;
+        margin: 0 auto 2rem;
+    }
+
+    .tournament-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .tournament-item {
+        text-align: left;
+        background: var(--color-surface);
+        border: 2px solid var(--color-primary);
+        border-radius: 3px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        width: 100%;
+        box-shadow: 4px 4px 0 var(--color-primary);
+    }
+
+    .tournament-item:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--color-primary);
+    }
+
+    .tournament-item h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+        color: var(--color-primary);
+    }
+
+    .tournament-details {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .date, .location {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .date::before {
+        content: "📅";
+        margin-right: 0.5rem;
+    }
+
+    .location::before {
+        content: "📍";
         margin-right: 0.5rem;
     }
 
