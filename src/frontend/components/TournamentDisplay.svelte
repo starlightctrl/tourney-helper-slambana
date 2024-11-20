@@ -178,28 +178,29 @@
     {:else}
         <div class="slambana-content">
             <div class="slambana-tournaments">
-            {#if slambanaList}
-                <div class="tournament-list">
-                    {#each slambanaList.slice(-5).reverse() as tournament}
-                        <button 
-                            class="tournament-item" 
-                            on:click={() => {
-                                tournamentSlug = tournament.slug;
-                                fetchTournamentData();
-                            }}
-                        >
-                            <h3>{tournament.name}</h3>
-                            <div class="tournament-details">
-                                <span class="date">
-                                    {new Date(tournament.startAt * 1000).toLocaleDateString()}
-                                </span>
-                            </div>
-                        </button>
-                    {/each}
-                </div>
-            {:else}
-                <div class="loading">Loading Slambana tournaments...</div>
-            {/if}
+                {#if slambanaList}
+                    <div class="tournament-list">
+                        {#each slambanaList.slice(-5).reverse() as tournament}
+                            <button 
+                                class="tournament-item" 
+                                on:click={() => {
+                                    tournamentSlug = tournament.slug;
+                                    fetchTournamentData();
+                                }}
+                            >
+                                <h3>{tournament.name}</h3>
+                                <div class="tournament-details">
+                                    <span class="date">
+                                        {new Date(tournament.startAt * 1000).toLocaleDateString()}
+                                    </span>
+                                </div>
+                            </button>
+                        {/each}
+                    </div>
+                {:else}
+                    <div class="loading">Loading Slambana tournaments...</div>
+                {/if}
+            </div>
         </div>
     {/if}
 
