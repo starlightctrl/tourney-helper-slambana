@@ -17,7 +17,7 @@
     }
 
     function nextPage() {
-        if (pageInfo?.hasNextPage) {
+        if (pageInfo && currentPage < pageInfo.totalPages) {
             currentPage++;
             loadSlambanaList(currentPage);
         }
@@ -142,6 +142,7 @@
             const data = await response.json();
             slambanaList = data?.data?.tournaments?.nodes || [];
             pageInfo = data?.data?.tournaments?.pageInfo;
+            currentPage = pageInfo?.page || 1;
             if (!slambanaList?.length) {
                 error = 'No tournaments found';
             }
@@ -220,7 +221,9 @@
                         >
                             Previous
                         </button>
-                        <span class="page-info">Page {currentPage}</span>
+                        <span class="page-info">
+                            Page {currentPage} of {pageInfo?.totalPages || 1}
+                        </span>
                         <button 
                             on:click={nextPage} 
                             disabled={!pageInfo?.totalPages || currentPage >= pageInfo.totalPages}
