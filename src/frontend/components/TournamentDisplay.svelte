@@ -5,6 +5,8 @@
     export let isSlambana = false;
     
     let slambanaList = null;
+    let currentPage = 1;
+    let pageInfo = null;
     
     $: if ($playerDatabaseVersion) {
         loadPlayerDatabase(); // Only reload when version changes
@@ -12,6 +14,20 @@
 
     $: if (isSlambana && !slambanaList) {
         loadSlambanaList();
+    }
+
+    function nextPage() {
+        if (pageInfo?.hasNextPage) {
+            currentPage++;
+            loadSlambanaList(currentPage);
+        }
+    }
+
+    function previousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            loadSlambanaList(currentPage);
+        }
     }
     let tournamentData = null;
     let error = null;
@@ -119,13 +135,13 @@
         return methods.length > 0 ? methods : null;
     }
 
-    async function loadSlambanaList() {
+    async function loadSlambanaList(page = 1) {
         try {
-            const response = await fetch('/api/tournament/slambana');
+            const response = await fetch(`/api/tournament/slambana?page=${page}`);
             if (!response.ok) throw new Error('Failed to fetch Slambana tournaments');
             const data = await response.json();
-            console.log('Slambana API response:', data); // Debug log
             slambanaList = data?.data?.tournaments?.nodes || [];
+            pageInfo = data?.data?.tournaments?.pageInfo;
             if (!slambanaList?.length) {
                 error = 'No tournaments found';
             }
@@ -180,7 +196,7 @@
             <div class="slambana-tournaments">
                 {#if slambanaList}
                     <div class="tournament-list">
-                        {#each slambanaList.slice(-5).reverse() as tournament}
+                        {#each slambanaList as tournament}
                             <button 
                                 class="tournament-item" 
                                 on:click={() => {
@@ -196,6 +212,21 @@
                                 </div>
                             </button>
                         {/each}
+                    </div>
+                    <div class="pagination">
+                        <button 
+                            on:click={previousPage} 
+                            disabled={currentPage === 1}
+                        >
+                            Previous
+                        </button>
+                        <span class="page-info">Page {currentPage}</span>
+                        <button 
+                            on:click={nextPage} 
+                            disabled={!pageInfo?.hasNextPage}
+                        >
+                            Next
+                        </button>
                     </div>
                 {:else}
                     <div class="loading">Loading Slambana tournaments...</div>
@@ -354,7 +385,46 @@
     }
 
     .slambana-content {
+        position: sticky;
+        top: 1rem;
+        align-self: start;
         grid-column: 1;
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding: 0.5rem;
+        background: var(--color-surface);
+        border: 2px solid var(--color-primary);
+        border-radius: 3px;
+    }
+
+    .pagination button {
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .pagination button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+
+    .pagination button:not(:disabled):hover {
+        background: var(--color-secondary);
+    }
+
+    .page-info {
+        font-size: 0.9rem;
+        color: var(--color-primary);
+        font-weight: 500;
     }
 
     .tournament-data {

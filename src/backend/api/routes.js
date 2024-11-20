@@ -9,9 +9,10 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/tournament/slambana', async (req, res) => {
     try {
-        console.log('Fetching Slambana tournaments');
-        const data = await startgg.getSlambanaData();
-        console.log('Slambana API response:', JSON.stringify(data, null, 2)); // Detailed logging
+        const page = parseInt(req.query.page) || 1;
+        console.log('Fetching Slambana tournaments page:', page);
+        const data = await startgg.getSlambanaData(page);
+        console.log('Slambana API response:', JSON.stringify(data, null, 2));
         
         if (!data || !data.tournaments || !data.tournaments.nodes) {
             console.error('Unexpected API response structure:', data);
@@ -22,7 +23,7 @@ router.get('/tournament/slambana', async (req, res) => {
             console.log('No tournaments found in response');
         }
         
-        res.json({ data: { tournaments: data.tournaments } }); // Match the expected structure
+        res.json({ data: { tournaments: data.tournaments } });
     } catch (error) {
         console.error('Slambana API error:', error);
         res.status(500).json({ error: error.message });
