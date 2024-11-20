@@ -282,7 +282,7 @@
     }
 
     .fee-input {
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
         width: 100%;
     }
 
@@ -290,46 +290,46 @@
         display: flex;
         align-items: center;
         background: white;
-        border: 1px solid #ced4da;
-        border-radius: 6px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         overflow: hidden;
         transition: all 0.2s ease;
         width: 100%;
     }
 
     .input-with-symbol:focus-within {
-        border-color: #4a90e2;
-        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
     }
 
     .dollar-symbol {
-        padding: 0.5rem;
-        background: #f1f3f5;
-        color: #495057;
-        border-right: 1px solid #ced4da;
-        font-weight: 600;
+        padding: 0.5rem 0.75rem;
+        background: #f8fafc;
+        color: #64748b;
+        border-right: 1px solid #e2e8f0;
+        font-weight: 500;
     }
 
     .input-with-symbol input {
         border: none;
-        padding: 0.5rem;
+        padding: 0.5rem 0.75rem;
         width: 100%;
         margin: 0;
         font-size: 0.95rem;
     }
 
     .prize-pool {
-        font-weight: 500;
-        color: #2c3e50;
-        margin: 0;
+        color: #64748b;
         font-size: 0.95rem;
+        margin: 0.5rem 0 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
     .prize-pool span {
-        color: #00796b;
+        color: #0f766e;
         font-weight: 600;
         font-size: 1.1rem;
     }
@@ -424,37 +424,38 @@
 
     .search-section input {
         flex: 1;
-        padding: 0.75rem;
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.875rem;
         font-size: 1rem;
         transition: all 0.2s ease;
-        background: #f8f9fa;
+        background: white;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     }
 
     .search-section input:focus {
-        border-color: #4a90e2;
+        border-color: #2563eb;
         background: white;
         outline: none;
-        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 
     .search-section button {
-        background: linear-gradient(to right, #4a90e2, #357abd);
+        background: #2563eb;
         color: white;
         border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
+        padding: 0.875rem 1.5rem;
+        border-radius: 10px;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+        box-shadow: 0 1px 2px rgba(37, 99, 235, 0.1);
     }
 
     .search-section button:hover {
-        background: linear-gradient(to right, #357abd, #2861a1);
+        background: #1d4ed8;
         transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.1);
     }
 
     .error {
