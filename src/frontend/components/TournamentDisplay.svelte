@@ -285,6 +285,7 @@
 
     .fee-input {
         margin-bottom: 0.75rem;
+        width: 100%;
     }
 
     .input-with-symbol {
@@ -295,6 +296,7 @@
         border-radius: 6px;
         overflow: hidden;
         transition: all 0.2s ease;
+        width: 100%;
     }
 
     .input-with-symbol:focus-within {
@@ -313,7 +315,7 @@
     .input-with-symbol input {
         border: none;
         padding: 0.5rem;
-        width: 100px;
+        width: 100%;
         margin: 0;
         font-size: 0.95rem;
     }
