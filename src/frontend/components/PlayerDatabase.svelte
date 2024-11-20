@@ -422,16 +422,26 @@
     .controls {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
         margin-bottom: 1rem;
     }
 
     .search {
         flex: 1;
-        margin-right: 1rem;
     }
 
     .search input {
         width: 100%;
+        margin: 0;
+        padding: 0.75rem 1.5rem;
+        height: 100%;
+    }
+
+    .import {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
     }
 
     .loading {
