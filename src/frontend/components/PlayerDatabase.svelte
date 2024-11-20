@@ -377,8 +377,8 @@
 
         /* Layout variables */
         --button-height: 2.75rem;
-        --button-padding: 0 1.5rem;
-        --gap-standard: 1rem;
+        --button-padding: 0 1rem;
+        --gap-standard: 0.75rem;
     }
 
     .player-database {
@@ -539,11 +539,11 @@
     input:not([type="file"]), 
     textarea {
         height: var(--button-height);
-        padding: 0 1.5rem;
+        padding: 0 1rem;
         border: 2px solid var(--color-primary);
         border-radius: 3px;
         font-size: 0.95rem;
-        margin: 0.5rem 0;
+        margin: 0.25rem 0;
         width: 100%;
         box-sizing: border-box;
     }
@@ -654,10 +654,17 @@
     .alias-add {
         display: flex;
         gap: var(--gap-standard);
+        align-items: center;
     }
 
     .alias-add input {
         flex: 1;
+        margin: 0;
+    }
+
+    .alias-add button {
+        white-space: nowrap;
+        margin: 0;
     }
 
     .alias-add button {
