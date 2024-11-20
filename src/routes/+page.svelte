@@ -27,7 +27,7 @@
         {#if activeTab === 'general'}
             <TournamentDisplay />
         {:else}
-            <TournamentDisplay />
+            <TournamentDisplay isSlambana={true} />
         {/if}
     </section>
     
