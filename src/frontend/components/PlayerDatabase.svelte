@@ -423,8 +423,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
+        gap: var(--spacing-unit);
+        margin-bottom: var(--spacing-unit);
     }
 
     .search {
@@ -440,7 +440,7 @@
 
     .import {
         display: flex;
-        gap: 1rem;
+        gap: var(--spacing-unit);
         align-items: center;
     }
 
