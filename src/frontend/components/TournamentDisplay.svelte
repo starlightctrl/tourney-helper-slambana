@@ -218,74 +218,86 @@
 
 <style>
     .tournament-display {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 1rem;
     }
 
     .event-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 2rem;
-        margin: 2rem 0;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin: 1.5rem 0;
     }
 
     .event {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 1.5rem;
-        transition: transform 0.2s ease;
+        background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        padding: 1.25rem;
+        transition: all 0.3s ease;
     }
 
     .event:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        border-color: #dee2e6;
     }
 
     .event-header {
-        border-bottom: 2px solid #f0f0f0;
-        padding-bottom: 1rem;
-        margin-bottom: 1rem;
+        border-bottom: 2px solid #e9ecef;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.75rem;
     }
 
     .event-header h3 {
         margin: 0;
-        color: #2c3e50;
-        font-size: 1.4rem;
+        color: #1a237e;
+        font-size: 1.3rem;
+        font-weight: 600;
+        letter-spacing: -0.5px;
     }
 
     .entrants {
-        margin: 0.5rem 0 0;
-        color: #666;
+        margin: 0.25rem 0 0;
+        color: #546e7a;
         font-size: 0.9rem;
+        font-weight: 500;
     }
 
     .fee-calculator {
-        background: #f8f9fa;
-        border-radius: 6px;
-        padding: 1rem;
-        margin: 1rem 0;
+        background: linear-gradient(to right, #f8f9fa, #ffffff);
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin: 0.75rem 0;
     }
 
     .fee-input {
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
     }
 
     .input-with-symbol {
         display: flex;
         align-items: center;
         background: white;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
         overflow: hidden;
+        transition: all 0.2s ease;
+    }
+
+    .input-with-symbol:focus-within {
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
     }
 
     .dollar-symbol {
         padding: 0.5rem;
-        background: #f0f0f0;
-        color: #666;
-        border-right: 1px solid #ddd;
+        background: #f1f3f5;
+        color: #495057;
+        border-right: 1px solid #ced4da;
+        font-weight: 600;
     }
 
     .input-with-symbol input {
@@ -293,113 +305,177 @@
         padding: 0.5rem;
         width: 100px;
         margin: 0;
+        font-size: 0.95rem;
     }
 
     .prize-pool {
         font-weight: 500;
         color: #2c3e50;
         margin: 0;
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .prize-pool span {
-        color: #2ecc71;
+        color: #00796b;
         font-weight: 600;
+        font-size: 1.1rem;
     }
 
-    .error {
-        color: red;
-        padding: 1rem;
-        border: 1px solid red;
-        border-radius: 4px;
-        margin: 1rem 0;
+    .standings {
+        margin-top: 1rem;
+    }
+
+    .standings h4 {
+        color: #37474f;
+        font-size: 1rem;
+        margin: 0 0 0.75rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #e9ecef;
     }
 
     ul {
         list-style-type: none;
         padding: 0;
+        margin: 0;
     }
 
     li {
-        padding: 0.5rem 0;
+        padding: 0.25rem 0;
     }
 
     .standing-entry {
-        background: #f8f9fa;
-        border-radius: 6px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        transition: background-color 0.2s ease;
+        background: linear-gradient(to right, #f8f9fa, #ffffff);
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin: 0.4rem 0;
+        transition: all 0.2s ease;
     }
 
     .standing-entry:hover {
-        background: #f0f0f0;
+        background: linear-gradient(to right, #f1f3f5, #f8f9fa);
+        transform: translateX(2px);
     }
 
     .placement-info {
         color: #2c3e50;
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .payment-info {
-        margin-top: 0.5rem;
-        padding-top: 0.5rem;
-        border-top: 1px dashed #ddd;
+        margin-top: 0.4rem;
+        padding-top: 0.4rem;
+        border-top: 1px dashed #e9ecef;
     }
 
     .payment-method {
-        color: #666;
-        font-size: 0.9rem;
-        padding: 0.2rem 0;
+        color: #546e7a;
+        font-size: 0.85rem;
+        padding: 0.15rem 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .payment-method::before {
+        content: "•";
+        margin-right: 0.5rem;
+        color: #4a90e2;
     }
 
     .no-payment {
-        color: #999;
+        color: #9e9e9e;
         font-style: italic;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        padding: 0.15rem 0;
     }
 
     h2 {
-        color: #2c3e50;
+        color: #1a237e;
         text-align: center;
-        margin: 2rem 0;
-        font-size: 2rem;
-        font-weight: 600;
+        margin: 1.5rem 0;
+        font-size: 1.8rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
     }
 
     .search-section {
         max-width: 500px;
-        margin: 2rem auto;
+        margin: 1.5rem auto;
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
     }
 
     .search-section input {
         flex: 1;
         padding: 0.75rem;
-        border: 2px solid #ddd;
-        border-radius: 6px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
         font-size: 1rem;
-        transition: border-color 0.2s ease;
+        transition: all 0.2s ease;
+        background: #f8f9fa;
     }
 
     .search-section input:focus {
-        border-color: #3498db;
+        border-color: #4a90e2;
+        background: white;
         outline: none;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
     }
 
     .search-section button {
-        background: #3498db;
+        background: linear-gradient(to right, #4a90e2, #357abd);
         color: white;
         border: none;
         padding: 0.75rem 1.5rem;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: 500;
         cursor: pointer;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
     }
 
     .search-section button:hover {
-        background: #2980b9;
+        background: linear-gradient(to right, #357abd, #2861a1);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
+    }
+
+    .error {
+        color: #dc3545;
+        padding: 1rem;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        margin: 1rem 0;
+        background: #fff5f5;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .error::before {
+        content: "⚠️";
+        margin-right: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .event-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .search-section {
+            flex-direction: column;
+        }
+
+        .search-section button {
+            width: 100%;
+        }
     }
 </style>
