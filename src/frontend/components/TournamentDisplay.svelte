@@ -179,7 +179,7 @@
         <div class="slambana-tournaments">
             {#if slambanaList}
                 <div class="tournament-list">
-                    {#each slambanaList as tournament}
+                    {#each slambanaList.slice(-5).reverse() as tournament}
                         <button 
                             class="tournament-item" 
                             on:click={() => {
@@ -189,8 +189,9 @@
                         >
                             <h3>{tournament.name}</h3>
                             <div class="tournament-details">
-                                <span class="date">{new Date(tournament.startAt * 1000).toLocaleDateString()}</span>
-                                <span class="location">{tournament.venueAddress}</span>
+                                <span class="date">
+                                    {new Date(tournament.startAt * 1000).toLocaleDateString()}
+                                </span>
                             </div>
                         </button>
                     {/each}
@@ -646,6 +647,14 @@
     }
 
     @media (max-width: 768px) {
+        .tournament-display {
+            grid-template-columns: 1fr;
+        }
+
+        .slambana-tournaments {
+            margin-bottom: 1.5rem;
+        }
+
         .event-grid {
             grid-template-columns: 1fr;
         }
