@@ -690,6 +690,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
+        padding-top: 4.8rem;
     }
 
     .tournament-item {
