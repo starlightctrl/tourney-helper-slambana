@@ -150,25 +150,34 @@
 
     {#if tournamentData}
         <h2>{tournamentData.tournament.name}</h2>
-        {#each tournamentData.tournament.events as event}
-            <div class="event">
-                <h3>{event.name}</h3>
-                <p>Entrants: {getTotalParticipants(event)}</p>
-                <div class="fee-calculator">
-                    <label>
-                        Entry Fee per Player: $
-                        <input 
-                            type="number" 
-                            bind:value={eventFees[event.name]} 
-                            min="0"
-                            step="0.01"
-                            placeholder="0.00"
-                        />
-                    </label>
-                    {#if eventFees[event.name]}
-                        <p>Total Prize Pool: ${calculatePrizePool(event).toFixed(2)}</p>
-                    {/if}
-                </div>
+        <div class="event-grid">
+            {#each tournamentData.tournament.events as event}
+                <div class="event">
+                    <div class="event-header">
+                        <h3>{event.name}</h3>
+                        <p class="entrants">Entrants: {getTotalParticipants(event)}</p>
+                    </div>
+                    
+                    <div class="fee-calculator">
+                        <div class="fee-input">
+                            <label>
+                                Entry Fee per Player:
+                                <div class="input-with-symbol">
+                                    <span class="dollar-symbol">$</span>
+                                    <input 
+                                        type="number" 
+                                        bind:value={eventFees[event.name]} 
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                    />
+                                </div>
+                            </label>
+                        </div>
+                        {#if eventFees[event.name]}
+                            <p class="prize-pool">Total Prize Pool: <span>${calculatePrizePool(event).toFixed(2)}</span></p>
+                        {/if}
+                    </div>
                 <div class="standings">
                     <h4>Prize Winners:</h4>
                     <ul>
@@ -213,15 +222,87 @@
         padding: 1rem;
     }
 
-    .search-section {
-        margin-bottom: 1rem;
+    .event-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
     }
 
     .event {
-        border: 1px solid #ccc;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        transition: transform 0.2s ease;
+    }
+
+    .event:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .event-header {
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .event-header h3 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 1.4rem;
+    }
+
+    .entrants {
+        margin: 0.5rem 0 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .fee-calculator {
+        background: #f8f9fa;
+        border-radius: 6px;
         padding: 1rem;
         margin: 1rem 0;
+    }
+
+    .fee-input {
+        margin-bottom: 1rem;
+    }
+
+    .input-with-symbol {
+        display: flex;
+        align-items: center;
+        background: white;
+        border: 1px solid #ddd;
         border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .dollar-symbol {
+        padding: 0.5rem;
+        background: #f0f0f0;
+        color: #666;
+        border-right: 1px solid #ddd;
+    }
+
+    .input-with-symbol input {
+        border: none;
+        padding: 0.5rem;
+        width: 100px;
+        margin: 0;
+    }
+
+    .prize-pool {
+        font-weight: 500;
+        color: #2c3e50;
+        margin: 0;
+    }
+
+    .prize-pool span {
+        color: #2ecc71;
+        font-weight: 600;
     }
 
     .error {
@@ -230,23 +311,6 @@
         border: 1px solid red;
         border-radius: 4px;
         margin: 1rem 0;
-    }
-
-    .fee-calculator {
-        margin: 1rem 0;
-        padding: 0.5rem;
-        background-color: #f5f5f5;
-        border-radius: 4px;
-    }
-
-    .fee-calculator input {
-        width: 80px;
-        margin-left: 0.5rem;
-        padding: 0.25rem;
-    }
-
-    .fee-calculator p {
-        margin: 0.5rem 0;
     }
 
     ul {
@@ -259,28 +323,82 @@
     }
 
     .standing-entry {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 0.5rem 0;
+        background: #f8f9fa;
+        border-radius: 6px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        transition: background-color 0.2s ease;
+    }
+
+    .standing-entry:hover {
+        background: #f0f0f0;
     }
 
     .placement-info {
-        font-weight: bold;
+        color: #2c3e50;
+        font-size: 1.1rem;
+        font-weight: 500;
     }
 
     .payment-info {
-        font-size: 0.9rem;
-        color: #666;
-        margin-left: 1rem;
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px dashed #ddd;
     }
 
     .payment-method {
-        margin: 0.2rem 0;
+        color: #666;
+        font-size: 0.9rem;
+        padding: 0.2rem 0;
     }
 
     .no-payment {
         color: #999;
         font-style: italic;
+        font-size: 0.9rem;
+    }
+
+    h2 {
+        color: #2c3e50;
+        text-align: center;
+        margin: 2rem 0;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .search-section {
+        max-width: 500px;
+        margin: 2rem auto;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .search-section input {
+        flex: 1;
+        padding: 0.75rem;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.2s ease;
+    }
+
+    .search-section input:focus {
+        border-color: #3498db;
+        outline: none;
+    }
+
+    .search-section button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .search-section button:hover {
+        background: #2980b9;
     }
 </style>
