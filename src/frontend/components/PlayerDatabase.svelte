@@ -1,5 +1,6 @@
 <script>
     import { onMount } from 'svelte';
+    import { notifyDatabaseUpdate } from '../stores/playerStore';
     
     let players = [];
     let searchQuery = '';
@@ -100,6 +101,7 @@
             }
             
             await loadPlayers();
+            notifyDatabaseUpdate();
             clearForm();
             setTimeout(() => successMessage = '', 3000);
         } catch (error) {

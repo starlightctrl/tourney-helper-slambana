@@ -1,5 +1,8 @@
 <script>
+    import { playerDatabaseVersion } from '../stores/playerStore';
     export let tournamentSlug = '';
+    
+    $: $playerDatabaseVersion, loadPlayerDatabase(); // Reloads whenever store changes
     let tournamentData = null;
     let error = null;
     let eventFees = {};  // Store fees for each event
