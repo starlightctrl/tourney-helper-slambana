@@ -47,6 +47,40 @@ class StartGGAPI {
         return json.data;
     }
 
+    async getSlambanaData() {
+        const query = `
+            query SlambanaQuery {
+                tournaments(query: {
+                    perPage: 10,
+                    filter: {
+                        location: {
+                            state: "IL"
+                        },
+                        videogameIds: [1],
+                        upcoming: true
+                    }
+                }) {
+                    nodes {
+                        name
+                        slug
+                        startAt
+                        venueAddress
+                        events {
+                            name
+                            numEntrants
+                            teamRosterSize {
+                                maxPlayers
+                            }
+                            type
+                        }
+                    }
+                }
+            }
+        `;
+
+        return this.query(query);
+    }
+
     async getTournamentData(tournamentSlug) {
         const query = `
             query TournamentQuery($slug: String!) {
