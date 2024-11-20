@@ -53,10 +53,7 @@ class StartGGAPI {
                 tournaments(query: {
                     perPage: 10,
                     filter: {
-                        location: {
-                            distanceFrom: "40.1164,-88.2434",
-                            distance: "20mi"
-                        },
+                        name: "Slambana",
                         videogameIds: [1],
                         upcoming: true
                     }
