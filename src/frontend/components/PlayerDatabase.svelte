@@ -361,6 +361,17 @@
 </div>
 
 <style>
+    :root {
+        --color-primary: #0f172a;
+        --color-secondary: #3b82f6;
+        --color-accent: #22c55e;
+        --color-background: #f8fafc;
+        --color-surface: #ffffff;
+        --color-error: #ef4444;
+        --color-text: #1e293b;
+        --spacing-unit: 1rem;
+    }
+
     .player-database {
         max-width: 800px;
         margin: 0 auto;
@@ -420,11 +431,19 @@
     }
 
     .player-card {
-        border: 1px solid #ccc;
-        padding: 1rem;
-        margin: 1rem 0;
-        border-radius: 4px;
-        background-color: #fff;
+        background: var(--color-surface);
+        border: 2px solid var(--color-primary);
+        border-radius: 3px;
+        padding: calc(var(--spacing-unit) * 1.5);
+        position: relative;
+        margin-bottom: var(--spacing-unit);
+        box-shadow: 8px 8px 0 var(--color-primary);
+        transition: all 0.2s ease;
+    }
+
+    .player-card:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 12px 12px 0 var(--color-primary);
     }
 
     .player-header {
@@ -466,16 +485,23 @@
     }
 
     button {
-        padding: 0.5rem 1rem;
-        background-color: #4CAF50;
+        background: var(--color-primary);
         color: white;
         border: none;
-        border-radius: 4px;
+        padding: 0.75rem 1.5rem;
+        position: relative;
+        font-weight: 600;
         cursor: pointer;
+        transition: all 0.2s ease;
+        border-radius: 3px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
     }
 
     button:hover {
-        background-color: #45a049;
+        background: var(--color-secondary);
+        transform: translateY(-2px);
     }
 
     .player-actions {

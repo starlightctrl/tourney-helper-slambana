@@ -217,6 +217,17 @@
 </div>
 
 <style>
+    :root {
+        --color-primary: #0f172a;
+        --color-secondary: #3b82f6;
+        --color-accent: #22c55e;
+        --color-background: #f8fafc;
+        --color-surface: #ffffff;
+        --color-error: #ef4444;
+        --color-text: #1e293b;
+        --spacing-unit: 1rem;
+    }
+
     /* Remove spinner arrows from number inputs */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
@@ -241,17 +252,19 @@
     }
 
     .event {
-        background: #ffffff;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        border-radius: 16px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-        padding: 1.5rem;
+        background: var(--color-surface);
+        border: 2px solid var(--color-primary);
+        border-radius: 3px;
+        padding: calc(var(--spacing-unit) * 1.5);
+        position: relative;
+        margin-bottom: var(--spacing-unit);
+        box-shadow: 8px 8px 0 var(--color-primary);
         transition: all 0.2s ease;
     }
 
     .event:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        transform: translate(-4px, -4px);
+        box-shadow: 12px 12px 0 var(--color-primary);
     }
 
     .event-header {
@@ -441,21 +454,23 @@
     }
 
     .search-section button {
-        background: #2563eb;
+        background: var(--color-primary);
         color: white;
         border: none;
-        padding: 0.875rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        position: relative;
+        font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
-        box-shadow: 0 1px 2px rgba(37, 99, 235, 0.1);
+        border-radius: 3px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
     }
 
     .search-section button:hover {
-        background: #1d4ed8;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.1);
+        background: var(--color-secondary);
+        transform: translateY(-2px);
     }
 
     .error {
