@@ -49,16 +49,12 @@ class StartGGAPI {
 
     async getSlambanaData() {
         const query = `
-            query SlambanaQuery {
+            query TournamentsByOwner($perPage: Int!) {
                 tournaments(query: {
-                    perPage: 100,
+                    perPage: $perPage
                     filter: {
-                        name: "slambana",
-                        videogameIds: [1]
-                    },
-                    page: 1,
-                    sortBy: "startAt",
-                    sortDesc: true
+                        name: "Slambana"
+                    }
                 }) {
                     nodes {
                         name
@@ -80,7 +76,7 @@ class StartGGAPI {
             }
         `;
 
-        return this.query(query);
+        return this.query(query, { perPage: 100 });
     }
 
     async getTournamentData(tournamentSlug) {
