@@ -178,40 +178,41 @@
                             <p class="prize-pool">Total Prize Pool: <span>${calculatePrizePool(event).toFixed(2)}</span></p>
                         {/if}
                     </div>
-                <div class="standings">
-                    <h4>Prize Winners:</h4>
-                    <ul>
-                        {#key $playerDatabaseVersion}
-                            {#each event.standings.nodes.slice(0, getPrizeWinningPlacements(event.numEntrants)) as standing}
-                                {#each standing.entrant.participants as participant}
-                                    <li>
-                                        <div class="standing-entry">
-                                            <div class="placement-info">
-                                                {standing.placement}. {participant.gamerTag} 
-                                                {#if eventFees[event.name]}
-                                                    - ${getPrizeForPlacement(event, standing.placement).toFixed(2)}
-                                                {/if}
-                                            </div>
-                                            {#if eventFees[event.name]}
-                                                <div class="payment-info">
-                                                    {#if getPlayerPaymentInfo(participant.gamerTag)}
-                                                        {#each getPlayerPaymentInfo(participant.gamerTag) as method}
-                                                            <div class="payment-method">{method}</div>
-                                                        {/each}
-                                                    {:else}
-                                                        <div class="no-payment">No payment info available</div>
+                    <div class="standings">
+                        <h4>Prize Winners</h4>
+                        <ul>
+                            {#key $playerDatabaseVersion}
+                                {#each event.standings.nodes.slice(0, getPrizeWinningPlacements(event.numEntrants)) as standing}
+                                    {#each standing.entrant.participants as participant}
+                                        <li>
+                                            <div class="standing-entry">
+                                                <div class="placement-info">
+                                                    {standing.placement}. {participant.gamerTag} 
+                                                    {#if eventFees[event.name]}
+                                                        - ${getPrizeForPlacement(event, standing.placement).toFixed(2)}
                                                     {/if}
                                                 </div>
-                                            {/if}
-                                        </div>
-                                    </li>
+                                                {#if eventFees[event.name]}
+                                                    <div class="payment-info">
+                                                        {#if getPlayerPaymentInfo(participant.gamerTag)}
+                                                            {#each getPlayerPaymentInfo(participant.gamerTag) as method}
+                                                                <div class="payment-method">{method}</div>
+                                                            {/each}
+                                                        {:else}
+                                                            <div class="no-payment">No payment info available</div>
+                                                        {/if}
+                                                    </div>
+                                                {/if}
+                                            </div>
+                                        </li>
+                                    {/each}
                                 {/each}
-                            {/each}
-                        {/key}
-                    </ul>
+                            {/key}
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        {/each}
+            {/each}
+        </div>
     {/if}
 </div>
 
