@@ -124,9 +124,15 @@
             const response = await fetch('/api/tournament/slambana');
             if (!response.ok) throw new Error('Failed to fetch Slambana tournaments');
             const data = await response.json();
-            slambanaList = data.tournaments.nodes;
+            console.log('Slambana API response:', data); // Debug log
+            slambanaList = data?.data?.tournaments?.nodes || [];
+            if (!slambanaList?.length) {
+                error = 'No tournaments found';
+            }
         } catch (e) {
+            console.error('Slambana load error:', e);
             error = e.message;
+            slambanaList = [];
         }
     }
 
