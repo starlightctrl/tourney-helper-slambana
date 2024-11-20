@@ -7,6 +7,17 @@ import playerDb from '../database/playerDb.js';
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
+router.get('/tournament/slambana', async (req, res) => {
+    try {
+        console.log('Fetching Slambana tournaments'); // Debug log
+        const data = await startgg.getSlambanaData();
+        res.json(data);
+    } catch (error) {
+        console.error('Slambana API error:', error); // Debug log
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.get('/tournament/:slug', async (req, res) => {
     try {
         console.log('Received request for tournament:', req.params.slug); // Debug log
@@ -17,6 +28,7 @@ router.get('/tournament/:slug', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 // Add new route for clearing database
 router.delete('/players/all', async (req, res) => {
