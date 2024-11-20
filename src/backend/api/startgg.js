@@ -49,9 +49,9 @@ class StartGGAPI {
 
     async getSlambanaData() {
         const query = `
-            query TournamentsByOwner($perPage: Int!) {
+            query SlambanaQuery {
                 tournaments(query: {
-                    perPage: $perPage
+                    perPage: 10
                     filter: {
                         name: "Slambana"
                     }
@@ -76,7 +76,7 @@ class StartGGAPI {
             }
         `;
 
-        return this.query(query, { perPage: 100 });
+        return this.query(query);
     }
 
     async getTournamentData(tournamentSlug) {
