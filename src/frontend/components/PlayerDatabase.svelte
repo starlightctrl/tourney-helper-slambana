@@ -374,6 +374,11 @@
         /* Font variables */
         --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         --font-mono: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
+
+        /* Layout variables */
+        --button-height: 2.75rem;
+        --button-padding: 0 1.5rem;
+        --gap-standard: 1rem;
     }
 
     .player-database {
@@ -423,7 +428,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: var(--spacing-unit);
+        gap: var(--gap-standard);
         margin-bottom: var(--spacing-unit);
     }
 
@@ -433,14 +438,17 @@
 
     .search input {
         width: 100%;
+        height: var(--button-height);
+        padding: 0 1.5rem;
         margin: 0;
-        padding: 0.75rem 1.5rem;
-        height: 100%;
+        border: 2px solid var(--color-primary);
+        border-radius: 3px;
+        font-size: 0.95rem;
     }
 
     .import {
         display: flex;
-        gap: var(--spacing-unit);
+        gap: var(--gap-standard);
         align-items: center;
     }
 
@@ -477,7 +485,7 @@
     .payment-methods {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
+        gap: var(--gap-standard);
         margin: 1rem 0;
     }
 
@@ -528,26 +536,40 @@
         border-top: 1px solid #eee;
     }
 
-    input, textarea {
+    input:not([type="file"]), 
+    textarea {
+        height: var(--button-height);
+        padding: 0 1.5rem;
+        border: 2px solid var(--color-primary);
+        border-radius: 3px;
+        font-size: 0.95rem;
         margin: 0.5rem 0;
-        padding: 0.5rem;
         width: 100%;
         box-sizing: border-box;
+    }
+
+    textarea {
+        height: auto;
+        padding: 1rem 1.5rem;
     }
 
     button {
         background: var(--color-primary);
         color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
+        height: var(--button-height);
+        padding: var(--button-padding);
+        border: 2px solid var(--color-primary);
+        border-radius: 3px;
         position: relative;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
-        border-radius: 3px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     button:hover {
@@ -631,7 +653,7 @@
 
     .alias-add {
         display: flex;
-        gap: 0.5rem;
+        gap: var(--gap-standard);
     }
 
     .alias-add input {
@@ -639,7 +661,6 @@
     }
 
     .alias-add button {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.9rem;
+        white-space: nowrap;
     }
 </style>
