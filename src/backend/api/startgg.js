@@ -54,7 +54,8 @@ class StartGGAPI {
                     perPage: 10,
                     filter: {
                         location: {
-                            state: "IL"
+                            distanceFrom: "40.1164,-88.2434",
+                            distance: "20mi"
                         },
                         videogameIds: [1],
                         upcoming: true
@@ -65,6 +66,8 @@ class StartGGAPI {
                         slug
                         startAt
                         venueAddress
+                        city
+                        addrState
                         events {
                             name
                             numEntrants
