@@ -47,12 +47,11 @@ class StartGGAPI {
         return json.data;
     }
 
-    async getSlambanaData(page = 1) {
+    async getSlambanaData() {
         const query = `
-            query SlambanaQuery($page: Int!) {
+            query SlambanaQuery {
                 tournaments(query: {
                     perPage: 5
-                    page: $page
                     filter: {
                         name: "Slambana"
                     }
@@ -73,18 +72,11 @@ class StartGGAPI {
                             type
                         }
                     }
-                    pageInfo {
-                        total
-                        totalPages
-                        page
-                        perPage
-                        hasNextPage
-                    }
                 }
             }
         `;
 
-        return this.query(query, { page });
+        return this.query(query);
     }
 
     async getTournamentData(tournamentSlug) {
