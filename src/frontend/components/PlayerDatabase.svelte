@@ -60,6 +60,7 @@
             console.log('Clear database response:', result);
             
             await loadPlayers();
+            notifyDatabaseUpdate();
             successMessage = 'Database cleared successfully';
             setTimeout(() => successMessage = '', 3000);
         } catch (error) {
@@ -146,6 +147,7 @@
             });
             if (!response.ok) throw new Error('Failed to delete player');
             await loadPlayers();
+            notifyDatabaseUpdate();
         } catch (error) {
             console.error('Failed to delete player:', error);
         }
