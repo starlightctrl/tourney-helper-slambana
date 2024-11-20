@@ -53,10 +53,9 @@ class StartGGAPI {
                 tournaments(query: {
                     perPage: 20,
                     filter: {
-                        search: {
-                            searchString: "Slambana"
-                        },
-                        videogameIds: [1]
+                        name: "Slambana",
+                        videogameIds: [1],
+                        past: true
                     }
                 }) {
                     nodes {
