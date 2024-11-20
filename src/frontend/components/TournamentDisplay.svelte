@@ -338,6 +338,9 @@
     }
 
     .tournament-display {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 2rem;
         max-width: 1200px;
         margin: 0 auto;
         padding: 1rem;
@@ -591,14 +594,14 @@
     }
 
     .slambana-tournaments {
-        max-width: 800px;
-        margin: 0 auto 2rem;
+        max-width: none;
+        margin: 0;
     }
 
     .tournament-list {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
     }
 
     .tournament-item {
@@ -606,28 +609,21 @@
         background: var(--color-surface);
         border: 2px solid var(--color-primary);
         border-radius: 3px;
-        padding: 1rem;
+        padding: 0.75rem;
         cursor: pointer;
         transition: all 0.2s ease;
         width: 100%;
         box-shadow: 4px 4px 0 var(--color-primary);
     }
 
-    .tournament-item:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0 var(--color-primary);
-    }
-
     .tournament-item h3 {
-        margin: 0 0 0.5rem 0;
-        font-size: 1.2rem;
+        margin: 0 0 0.25rem 0;
+        font-size: 1.1rem;
         color: var(--color-primary);
     }
 
     .tournament-details {
-        display: flex;
-        gap: 1rem;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: #666;
     }
 
