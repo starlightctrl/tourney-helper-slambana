@@ -241,32 +241,30 @@
     }
 
     .event {
-        background: linear-gradient(to bottom, #ffffff, #f8f9fa);
-        border: 1px solid #e9ecef;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        padding: 1.25rem;
-        transition: all 0.3s ease;
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+        padding: 1.5rem;
+        transition: all 0.2s ease;
     }
 
     .event:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-        border-color: #dee2e6;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
 
     .event-header {
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 0.75rem;
-        margin-bottom: 0.75rem;
+        border-bottom: 2px solid #f5f5f5;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
     }
 
     .event-header h3 {
-        margin: 0;
-        color: #1a237e;
-        font-size: 1.3rem;
+        color: #2d3748;
+        font-size: 1.4rem;
         font-weight: 600;
-        letter-spacing: -0.5px;
+        margin: 0;
     }
 
     .entrants {
@@ -359,16 +357,16 @@
     }
 
     .standing-entry {
-        background: linear-gradient(to right, #f8f9fa, #ffffff);
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        padding: 0.75rem;
-        margin: 0.4rem 0;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.875rem;
+        margin: 0.5rem 0;
         transition: all 0.2s ease;
     }
 
     .standing-entry:hover {
-        background: linear-gradient(to right, #f1f3f5, #f8f9fa);
+        background: #f8fafc;
         transform: translateX(2px);
     }
 
