@@ -163,7 +163,7 @@
     }
 </script>
 
-<div class="tournament-display">
+<div class="tournament-display" class:slambana-layout={isSlambana}>
     {#if !isSlambana}
         <form class="search-section" on:submit|preventDefault={fetchTournamentData}>
             <input 
@@ -176,7 +176,8 @@
             <button type="submit">Load Tournament</button>
         </form>
     {:else}
-        <div class="slambana-tournaments">
+        <div class="slambana-content">
+            <div class="slambana-tournaments">
             {#if slambanaList}
                 <div class="tournament-list">
                     {#each slambanaList.slice(-5).reverse() as tournament}
@@ -207,8 +208,9 @@
     {/if}
 
     {#if tournamentData}
-        <h2>{tournamentData.tournament.name}</h2>
-        <div class="event-grid">
+        <div class="tournament-data">
+            <h2>{tournamentData.tournament.name}</h2>
+            <div class="event-grid">
             {#each tournamentData.tournament.events as event}
                 <div class="event">
                     <div class="event-header">
@@ -270,6 +272,7 @@
                     </div>
                 </div>
             {/each}
+            </div>
         </div>
     {/if}
 </div>
@@ -338,12 +341,23 @@
     }
 
     .tournament-display {
-        display: grid;
-        grid-template-columns: 300px 1fr;
-        gap: 2rem;
         max-width: 1200px;
         margin: 0 auto;
         padding: 1rem;
+    }
+
+    .slambana-layout {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 2rem;
+    }
+
+    .slambana-content {
+        grid-column: 1;
+    }
+
+    .tournament-data {
+        grid-column: 2;
     }
 
     .event-grid {
@@ -643,8 +657,13 @@
     }
 
     @media (max-width: 768px) {
-        .tournament-display {
+        .slambana-layout {
             grid-template-columns: 1fr;
+        }
+
+        .slambana-content,
+        .tournament-data {
+            grid-column: 1;
         }
 
         .slambana-tournaments {
