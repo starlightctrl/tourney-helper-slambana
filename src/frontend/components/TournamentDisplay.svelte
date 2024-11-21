@@ -29,6 +29,8 @@
             loadSlambanaList(currentPage);
         }
     }
+    let firstTimerCounts = {};
+    let dqCounts = {};
     let tournamentData = null;
     let error = null;
     let eventFees = {};  // Store fees for each event
@@ -253,26 +255,63 @@
                         <p class="entrants">Entrants: {getTotalParticipants(event)}</p>
                     </div>
                     
-                    <div class="fee-calculator">
-                        <div class="fee-input">
-                            <label>
-                                Entry Fee per Player:
-                                <div class="input-with-symbol">
-                                    <span class="dollar-symbol">$</span>
-                                    <input 
-                                        type="number" 
-                                        bind:value={eventFees[event.name]} 
-                                        min="0"
-                                        step="0.01"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                            </label>
+                    {#if !isSlambana}
+                        <div class="fee-calculator">
+                            <div class="fee-input">
+                                <label>
+                                    Entry Fee per Player:
+                                    <div class="input-with-symbol">
+                                        <span class="dollar-symbol">$</span>
+                                        <input 
+                                            type="number" 
+                                            bind:value={eventFees[event.name]} 
+                                            min="0"
+                                            step="0.01"
+                                            placeholder="0.00"
+                                        />
+                                    </div>
+                                </label>
+                            </div>
+                            {#if eventFees[event.name]}
+                                <p class="prize-pool">Total Prize Pool: <span>${calculatePrizePool(event).toFixed(2)}</span></p>
+                            {/if}
                         </div>
-                        {#if eventFees[event.name]}
+                    {:else}
+                        <div class="fee-calculator">
+                            <p class="fee-display">Entry Fee: $3</p>
+                            <div class="slambana-adjustments">
+                                <div class="adjustment-input">
+                                    <label>
+                                        First-Time Players:
+                                        <input 
+                                            type="number" 
+                                            bind:value={firstTimerCounts[event.name]} 
+                                            min="0"
+                                            max={event.numEntrants}
+                                            placeholder="0"
+                                        />
+                                    </label>
+                                </div>
+                                <div class="adjustment-input">
+                                    <label>
+                                        DQ Count:
+                                        <input 
+                                            type="number" 
+                                            bind:value={dqCounts[event.name]} 
+                                            min="0"
+                                            max={event.numEntrants}
+                                            placeholder="0"
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="entrant-summary">
+                                <p>Total Entrants: {event.numEntrants}</p>
+                                <p>Adjusted Entrants: {getTotalParticipants(event)}</p>
+                            </div>
                             <p class="prize-pool">Total Prize Pool: <span>${calculatePrizePool(event).toFixed(2)}</span></p>
-                        {/if}
-                    </div>
+                        </div>
+                    {/if}
                     <div class="standings">
                         <h4>Prize Winners</h4>
                         <ul>
