@@ -8,7 +8,7 @@ A web application for tournament organizers to manage payouts and player informa
 2. Install dependencies: `npm install`
 3. Create a `local-data` directory and add:
    - `token.txt` with your start.gg API token
-   - Copy `example-players.json` to `local-data/players.json` and customize
+   - `players.json`, you can copy `example-players.json` to `local-data`, rename, and customize
 4. Start the development server: `npm run dev`
 
 ## Features
