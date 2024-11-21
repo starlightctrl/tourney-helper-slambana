@@ -63,14 +63,13 @@
 
     function calculatePrizePool(event) {
         if (isSlambana) {
-            const firstTimers = firstTimerCounts[event.name] || 0;
+            const firstTimers = event.name === "Ultimate Singles" ? (firstTimerCounts[event.name] || 0) : 0;
             const dqs = dqCounts[event.name] || 0;
-            const adjustedEntrants = event.numEntrants - firstTimers - dqs;
-            return 3 * Math.max(0, adjustedEntrants); // Ensure we don't go negative
+            const adjustedEntrants = Math.max(0, event.numEntrants - firstTimers - dqs);
+            return 3 * adjustedEntrants;
         } else {
             const fee = eventFees[event.name] || 0;
-            const totalParticipants = getTotalParticipants(event);
-            return fee * totalParticipants;
+            return fee * getTotalParticipants(event);
         }
     }
 
@@ -120,8 +119,13 @@
     }
 
     function getTotalParticipants(event) {
-        // If it's a team event, multiply numEntrants by roster size
-        return event.teamRosterSize ? event.numEntrants * event.teamRosterSize.maxPlayers : event.numEntrants;
+        if (isSlambana) {
+            const firstTimers = event.name === "Ultimate Singles" ? (firstTimerCounts[event.name] || 0) : 0;
+            const dqs = dqCounts[event.name] || 0;
+            return Math.max(0, event.numEntrants - firstTimers - dqs);
+        } else {
+            return event.teamRosterSize ? event.numEntrants * event.teamRosterSize.maxPlayers : event.numEntrants;
+        }
     }
 
     function getPrizeWinningPlacements(numEntrants) {
@@ -318,9 +322,13 @@
                                     </label>
                                 </div>
                             </div>
+                            {@const firstTimerCount = firstTimerCounts[event.name] || 0}
+                            {@const dqCount = dqCounts[event.name] || 0}
+                            {@const adjustedEntrants = event.numEntrants - (event.name === "Ultimate Singles" ? firstTimerCount : 0) - dqCount}
+                
                             <div class="entrant-summary">
                                 <p>Total Entrants: {event.numEntrants}</p>
-                                <p>Adjusted Entrants: {getTotalParticipants(event)}</p>
+                                <p>Adjusted Entrants: {adjustedEntrants}</p>
                             </div>
                             <p class="prize-pool">Total Prize Pool: <span>${calculatePrizePool(event).toFixed(2)}</span></p>
                         </div>
@@ -334,12 +342,14 @@
                                         <li>
                                             <div class="standing-entry">
                                                 <div class="placement-info">
-                                                    {standing.placement}. {participant.gamerTag} 
-                                                    {#if eventFees[event.name]}
+                                                    {standing.placement}. {participant.gamerTag}
+                                                    {#if isSlambana}
+                                                        - ${getPrizeForPlacement(event, standing.placement).toFixed(2)}
+                                                    {:else if eventFees[event.name]}
                                                         - ${getPrizeForPlacement(event, standing.placement).toFixed(2)}
                                                     {/if}
                                                 </div>
-                                                {#if eventFees[event.name]}
+                                                {#if isSlambana || eventFees[event.name]}
                                                     <div class="payment-info">
                                                         {#if getPlayerPaymentInfo(participant.gamerTag)}
                                                             {#each getPlayerPaymentInfo(participant.gamerTag) as method}
