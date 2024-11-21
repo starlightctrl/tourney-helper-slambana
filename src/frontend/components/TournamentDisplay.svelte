@@ -264,6 +264,9 @@
             <h2>{tournamentData.tournament.name}</h2>
             <div class="event-grid">
             {#each tournamentData.tournament.events as event}
+                {@const firstTimerCount = firstTimerCounts[event.name] || 0}
+                {@const dqCount = dqCounts[event.name] || 0}
+                {@const adjustedEntrants = event.numEntrants - (event.name === "Ultimate Singles" ? firstTimerCount : 0) - dqCount}
                 <div class="event">
                     <div class="event-header">
                         <h3>{event.name}</h3>
@@ -322,10 +325,6 @@
                                     </label>
                                 </div>
                             </div>
-                            {@const firstTimerCount = firstTimerCounts[event.name] || 0}
-                            {@const dqCount = dqCounts[event.name] || 0}
-                            {@const adjustedEntrants = event.numEntrants - (event.name === "Ultimate Singles" ? firstTimerCount : 0) - dqCount}
-                
                             <div class="entrant-summary">
                                 <p>Total Entrants: {event.numEntrants}</p>
                                 <p>Adjusted Entrants: {adjustedEntrants}</p>
