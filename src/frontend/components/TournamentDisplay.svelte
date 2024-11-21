@@ -129,10 +129,11 @@
     }
 
     function getPrizeWinningPlacements(numEntrants) {
-        if (numEntrants < 9) return 2;
-        if (numEntrants < 17) return 3;
-        if (numEntrants < 29) return 4;
-        if (numEntrants < 40) return 6; // Includes two 5th places
+        const adjustedNum = Math.max(0, numEntrants); // Ensure non-negative
+        if (adjustedNum < 9) return 2;
+        if (adjustedNum < 17) return 3;
+        if (adjustedNum < 29) return 4;
+        if (adjustedNum < 40) return 6; // Includes two 5th places
         return 8; // Includes two 5th places and two 7th places
     }
 
@@ -336,7 +337,7 @@
                         <h4>Prize Winners</h4>
                         <ul>
                             {#key $playerDatabaseVersion}
-                                {#each event.standings.nodes.slice(0, getPrizeWinningPlacements(event.numEntrants)) as standing}
+                                {#each event.standings.nodes.slice(0, getPrizeWinningPlacements(adjustedEntrants)) as standing}
                                     {#each standing.entrant.participants as participant}
                                         <li>
                                             <div class="standing-entry">
@@ -600,9 +601,13 @@
 
     .slambana-adjustments {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
         margin: 1rem 0;
+    }
+
+    .adjustment-input {
+        width: 100%;
     }
 
     .adjustment-input label {
