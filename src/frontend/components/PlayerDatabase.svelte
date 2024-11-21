@@ -486,7 +486,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: var(--gap-standard);
-        margin: 1rem 0;
+        margin: 0.5rem 0;
     }
 
     .player-card {
@@ -605,8 +605,8 @@
 
     .form-buttons {
         display: flex;
-        gap: 0.5rem;
-        margin-top: 1rem;
+        gap: var(--gap-standard);
+        margin-top: 0.5rem;
     }
 
     .danger {
@@ -618,7 +618,7 @@
     }
 
     .aliases-input {
-        margin: 1rem 0;
+        margin: 0.5rem 0;
     }
 
     .alias-list {
