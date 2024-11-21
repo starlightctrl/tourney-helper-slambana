@@ -75,10 +75,10 @@
     }
 
     function getPrizeForPlacement(event, placement) {
-        if (!eventFees[event.name]) return 0;
+        if (!eventFees[event.name] && !isSlambana) return 0;
         
         const prizePool = calculatePrizePool(event);
-        const entrants = event.numEntrants;
+        const entrants = getTotalParticipants(event); // Use adjusted count
         const teamSize = event.teamRosterSize ? event.teamRosterSize.maxPlayers : 1;
         
         // Prize splits based on number of entrants
@@ -170,17 +170,21 @@
 
     async function fetchTournamentData() {
         try {
+            // Reset the counts when loading a new tournament
+            firstTimerCounts = {};
+            dqCounts = {};
+            
             const encodedSlug = encodeURIComponent(tournamentSlug);
-            console.log('Fetching tournament:', encodedSlug); // Debug log
+            console.log('Fetching tournament:', encodedSlug);
             const response = await fetch(`/api/tournament/${encodedSlug}`);
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error(`Failed to fetch tournament data: ${errorText}`);
             }
             const data = await response.json();
-            tournamentData = data;  // Set tournament data first
+            tournamentData = data;
             error = null;
-            await loadPlayerDatabase();  // Then load player data
+            await loadPlayerDatabase();
         } catch (e) {
             console.error('Fetch error:', e); // Debug log
             error = e.message;
@@ -287,19 +291,21 @@
                         <div class="fee-calculator">
                             <p class="fee-display">Entry Fee: $3</p>
                             <div class="slambana-adjustments">
-                                <div class="adjustment-input">
-                                    <label>
-                                        First-Time Players:
-                                        <input 
-                                            type="number" 
-                                            bind:value={firstTimerCounts[event.name]} 
-                                            min="0"
-                                            max={event.numEntrants}
-                                            placeholder="0"
-                                        />
-                                    </label>
-                                </div>
-                                <div class="adjustment-input">
+                                {#if event.name === "Ultimate Singles"}
+                                    <div class="adjustment-input">
+                                        <label>
+                                            First-Time Players:
+                                            <input 
+                                                type="number" 
+                                                bind:value={firstTimerCounts[event.name]} 
+                                                min="0"
+                                                max={event.numEntrants}
+                                                placeholder="0"
+                                            />
+                                        </label>
+                                    </div>
+                                {/if}
+                                <div class="adjustment-input" class:full-width={event.name !== "Ultimate Singles"}>
                                     <label>
                                         DQ Count:
                                         <input 
@@ -605,6 +611,10 @@
         border-radius: 4px;
         font-size: 0.95rem;
         width: 100%;
+    }
+
+    .adjustment-input.full-width {
+        grid-column: 1 / -1;
     }
 
     .entrant-summary {
