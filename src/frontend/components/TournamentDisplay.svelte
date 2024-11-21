@@ -62,9 +62,16 @@
     }
 
     function calculatePrizePool(event) {
-        const fee = eventFees[event.name] || 0;
-        const totalParticipants = getTotalParticipants(event);
-        return fee * totalParticipants;
+        if (isSlambana) {
+            const firstTimers = firstTimerCounts[event.name] || 0;
+            const dqs = dqCounts[event.name] || 0;
+            const adjustedEntrants = event.numEntrants - firstTimers - dqs;
+            return 3 * Math.max(0, adjustedEntrants); // Ensure we don't go negative
+        } else {
+            const fee = eventFees[event.name] || 0;
+            const totalParticipants = getTotalParticipants(event);
+            return fee * totalParticipants;
+        }
     }
 
     function getPrizeForPlacement(event, placement) {
@@ -574,6 +581,43 @@
         color: #0f766e;
         font-weight: 600;
         font-size: 1.1rem;
+    }
+
+    .slambana-adjustments {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .adjustment-input label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+
+    .adjustment-input input {
+        height: 2.5rem;
+        padding: 0 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+
+    .entrant-summary {
+        background: #f8fafc;
+        padding: 0.75rem;
+        border-radius: 4px;
+        margin: 0.5rem 0;
+    }
+
+    .entrant-summary p {
+        margin: 0.25rem 0;
+        font-size: 0.9rem;
+        color: #64748b;
     }
 
     .standings {
