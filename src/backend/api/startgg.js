@@ -15,9 +15,9 @@ class StartGGAPI {
 
     async initialize() {
         try {
-            this.token = process.env.STARTGG_API_KEY;
+            this.token = import.meta.env.VITE_STARTGG_API_KEY;
             if (!this.token) {
-                throw new Error('STARTGG_API_KEY environment variable not set');
+                throw new Error('VITE_STARTGG_API_KEY environment variable not set');
             }
         } catch (error) {
             throw new Error('Failed to load start.gg API token: ' + error.message);
