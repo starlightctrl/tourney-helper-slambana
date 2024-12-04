@@ -62,9 +62,9 @@ class TournamentDatabase {
         return this.tournaments;
     }
 
-    async getTournament(id) {
+    async getTournament(slug) {
         if (!this.initialized) await this.initialize();
-        return this.tournaments.find(t => t.id === id);
+        return this.tournaments.find(t => t.slug === slug || t.id === slug);
     }
 }
 
