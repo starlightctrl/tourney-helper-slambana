@@ -607,7 +607,7 @@
     }
 
     .adjustment-input {
-        width: 100%;
+        width: 90%;
     }
 
     .adjustment-input label {
