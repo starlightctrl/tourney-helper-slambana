@@ -39,6 +39,8 @@ class PlayerDatabase {
         console.log('Saving database with players:', this.players.length);
         // Try to save to file first
         try {
+            // Sort players by tag for consistent ordering
+            this.players.sort((a, b) => a.tag.localeCompare(b.tag));
             await fs.writeFile(DB_PATH, JSON.stringify(this.players, null, 2));
             console.log('Database saved successfully to file');
         } catch (error) {
@@ -111,6 +113,46 @@ class PlayerDatabase {
             player.tag.toLowerCase().includes(query) ||
             player.aliases.some(alias => alias.toLowerCase().includes(query))
         );
+    }
+
+    async mergePlayers(newPlayers) {
+        if (!this.initialized) await this.initialize();
+        
+        let importCount = { new: 0, updated: 0 };
+        
+        for (const newPlayer of newPlayers) {
+            const existingPlayer = this.players.find(p => 
+                p.tag.toLowerCase() === newPlayer.tag.toLowerCase()
+            );
+            
+            if (existingPlayer) {
+                // Merge the player data, keeping existing data if new data is empty
+                const mergedPlayer = {
+                    ...existingPlayer,
+                    tag: existingPlayer.tag, // Keep existing tag case
+                    aliases: [...new Set([...existingPlayer.aliases, ...(newPlayer.aliases || [])])],
+                    paymentMethods: {
+                        venmo: newPlayer.paymentMethods?.venmo || existingPlayer.paymentMethods.venmo,
+                        paypal: newPlayer.paymentMethods?.paypal || existingPlayer.paymentMethods.paypal,
+                        zelle: newPlayer.paymentMethods?.zelle || existingPlayer.paymentMethods.zelle
+                    },
+                    notes: newPlayer.notes || existingPlayer.notes
+                };
+                
+                // Only update if something changed
+                if (JSON.stringify(mergedPlayer) !== JSON.stringify(existingPlayer)) {
+                    const index = this.players.indexOf(existingPlayer);
+                    this.players[index] = mergedPlayer;
+                    importCount.updated++;
+                }
+            } else {
+                this.players.push(newPlayer);
+                importCount.new++;
+            }
+        }
+        
+        await this.save();
+        return importCount;
     }
 }
 

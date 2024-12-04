@@ -112,22 +112,7 @@ router.post('/players/import', upload.single('file'), async (req, res) => {
                 return res.status(400).json({ error: 'Invalid JSON format. Expected array of players.' });
             }
 
-            const existingPlayers = await playerDb.getAllPlayers();
-            let importCount = { new: 0, updated: 0 };
-
-            for (const playerData of players) {
-                const existingPlayer = existingPlayers.find(p => 
-                    p.tag.toLowerCase() === playerData.tag.toLowerCase()
-                );
-
-                if (existingPlayer) {
-                    await playerDb.updatePlayer(existingPlayer.tag, playerData);
-                    importCount.updated++;
-                } else {
-                    await playerDb.addPlayer(playerData);
-                    importCount.new++;
-                }
-            }
+            const importCount = await playerDb.mergePlayers(players);
 
             return res.json({
                 message: 'Import successful',

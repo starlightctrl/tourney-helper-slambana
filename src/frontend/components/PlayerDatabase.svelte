@@ -175,9 +175,12 @@
                         throw new Error(await response.text());
                     }
                     
+                    const result = await response.json();
                     await loadPlayers();
-                    successMessage = 'JSON database imported successfully';
+                    notifyDatabaseUpdate();
+                    successMessage = `Import successful: ${result.newPlayers} new players added, ${result.updatedPlayers} players updated`;
                     setTimeout(() => successMessage = '', 3000);
+                    event.target.value = ''; // Reset file input
                     return;
                 }
             } catch (error) {
