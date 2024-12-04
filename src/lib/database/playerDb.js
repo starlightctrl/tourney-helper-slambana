@@ -1,4 +1,4 @@
-import { Storage } from './storage';
+import { kv } from '@vercel/kv';
 
 class PlayerDatabase {
     constructor() {
@@ -9,7 +9,7 @@ class PlayerDatabase {
     async initialize() {
         if (this.initialized) return;
         try {
-            const data = await Storage.get('players');
+            const data = await kv.get('players');
             this.players = data || [];
         } catch (error) {
             console.error('Failed to initialize database:', error);
@@ -20,7 +20,7 @@ class PlayerDatabase {
 
     async save() {
         try {
-            await Storage.set('players', this.players);
+            await kv.set('players', this.players);
         } catch (error) {
             console.error('Failed to save to database:', error);
             throw error;

@@ -1,3 +1,21 @@
 {
-	"/": []
+	"/": [],
+	"/api/health": [
+		"src/routes/api/health/+server.js"
+	],
+	"/api/players": [
+		"src/routes/api/players/+server.js"
+	],
+	"/api/players/[tag]": [
+		"src/routes/api/players/[tag]/+server.js"
+	],
+	"/api/tournaments": [
+		"src/routes/api/tournaments/+server.js"
+	],
+	"/api/tournament/slambana": [
+		"src/routes/api/tournament/slambana/+server.js"
+	],
+	"/api/tournament/[slug]": [
+		"src/routes/api/tournament/[slug]/+server.js"
+	]
 }
