@@ -26,6 +26,7 @@
  * ```
  */
 declare module '$env/static/private' {
+	export const STARTGG_API_KEY: string;
 	export const MANPATH: string;
 	export const __MISE_DIFF: string;
 	export const TERM_PROGRAM: string;
@@ -118,6 +119,7 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
+		STARTGG_API_KEY: string;
 		MANPATH: string;
 		__MISE_DIFF: string;
 		TERM_PROGRAM: string;
