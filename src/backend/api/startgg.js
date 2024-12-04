@@ -15,11 +15,12 @@ class StartGGAPI {
 
     async initialize() {
         try {
-            console.log('Available env vars:', import.meta.env); // This will show all available env vars
-            this.token = import.meta.env.VITE_STARTGG_API_KEY;
-            console.log('Token value:', this.token); // This will show the actual token value
+            // For server-side code, we should use process.env instead of import.meta.env
+            console.log('Available env vars:', process.env);
+            this.token = process.env.STARTGG_API_KEY || process.env.VITE_STARTGG_API_KEY;
+            console.log('Token value:', this.token);
             if (!this.token) {
-                throw new Error('VITE_STARTGG_API_KEY environment variable not set');
+                throw new Error('Neither STARTGG_API_KEY nor VITE_STARTGG_API_KEY environment variable is set');
             }
         } catch (error) {
             console.error('Initialization error:', error);
