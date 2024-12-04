@@ -1,22 +1,22 @@
 import { json } from '@sveltejs/kit';
-import tournamentDb from '$lib/database/tournamentDb';
+import startgg from '$lib/api/startgg';
 
 export async function GET({ params }) {
     const { slug } = params;
-    console.log('Fetching tournament with slug:', slug); // Debug log
+    console.log('Fetching tournament with slug:', slug);
     
     try {
-        const tournament = await tournamentDb.getTournament(slug);
+        const data = await startgg.getTournamentData(slug);
         
-        if (!tournament) {
-            console.log('Tournament not found:', slug); // Debug log
+        if (!data || !data.tournament) {
+            console.log('Tournament not found:', slug);
             return new Response('Tournament not found', { status: 404 });
         }
         
-        console.log('Tournament found:', tournament.name); // Debug log
-        return json(tournament);
+        console.log('Tournament found:', data.tournament.name);
+        return json(data);
     } catch (error) {
-        console.error('Error fetching tournament:', error); // Debug log
+        console.error('Error fetching tournament:', error);
         return new Response('Error fetching tournament: ' + error.message, { 
             status: 500 
         });
