@@ -20,7 +20,7 @@ node_modules/
 
 # Local data
 local-data/
-!local-data/.gitignore
+!local-data/.gitkeep
 
 # Logs
 npm-debug.log*

@@ -1,12 +1,4 @@
-import { kv } from '@vercel/kv';
-
-// Verify required environment variables
-const requiredEnvVars = ['KV_URL', 'KV_REST_API_URL', 'KV_REST_API_TOKEN', 'KV_REST_API_READ_ONLY_TOKEN'];
-for (const envVar of requiredEnvVars) {
-    if (!process.env[envVar]) {
-        console.error(`Missing required environment variable: ${envVar}`);
-    }
-}
+import { Storage } from './storage';
 
 class PlayerDatabase {
     constructor() {
@@ -17,7 +9,7 @@ class PlayerDatabase {
     async initialize() {
         if (this.initialized) return;
         try {
-            const data = await kv.get('players');
+            const data = await Storage.get('players');
             this.players = data || [];
         } catch (error) {
             console.error('Failed to initialize database:', error);
@@ -28,7 +20,7 @@ class PlayerDatabase {
 
     async save() {
         try {
-            await kv.set('players', this.players);
+            await Storage.set('players', this.players);
         } catch (error) {
             console.error('Failed to save to database:', error);
             throw error;
