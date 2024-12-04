@@ -6,7 +6,7 @@
             "paymentMethods": {
                 "venmo": "@player1",
                 "paypal": "player1@email.com",
-                "zelle": null
+                "zelle": ""
             },
             "notes": "Prefers Venmo"
         },
@@ -14,7 +14,7 @@
             "tag": "Player2",
             "aliases": [],
             "paymentMethods": {
-                "venmo": null,
+                "venmo": "",
                 "paypal": "player2@email.com",
                 "zelle": "555-123-4567"
             },
