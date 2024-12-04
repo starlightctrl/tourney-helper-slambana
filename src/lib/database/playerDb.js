@@ -1,5 +1,13 @@
 import { kv } from '@vercel/kv';
 
+// Verify required environment variables
+const requiredEnvVars = ['KV_URL', 'KV_REST_API_URL', 'KV_REST_API_TOKEN', 'KV_REST_API_READ_ONLY_TOKEN'];
+for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+        console.error(`Missing required environment variable: ${envVar}`);
+    }
+}
+
 class PlayerDatabase {
     constructor() {
         this.players = [];
