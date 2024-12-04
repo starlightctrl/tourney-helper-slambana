@@ -105,23 +105,6 @@ router.delete('/players/:tag', async (req, res) => {
 
 router.post('/players/import', upload.single('file'), async (req, res) => {
     try {
-        // Handle JSON data sent directly
-        if (req.headers['content-type'] === 'application/json') {
-            const players = req.body.players;
-            if (!Array.isArray(players)) {
-                return res.status(400).json({ error: 'Invalid JSON format. Expected array of players.' });
-            }
-
-            const importCount = await playerDb.mergePlayers(players);
-
-            return res.json({
-                message: 'Import successful',
-                newPlayers: importCount.new,
-                updatedPlayers: importCount.updated
-            });
-        }
-
-        // Handle Excel/CSV file upload
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
         }
