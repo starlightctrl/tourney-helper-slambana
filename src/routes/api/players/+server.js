@@ -16,3 +16,9 @@ export async function DELETE() {
     await playerDb.clearDatabase();
     return json({ message: 'Database cleared successfully' });
 }
+
+export async function PUT({ request }) {
+    const data = await request.json();
+    const result = await playerDb.mergePlayers(data);
+    return json(result);
+}
