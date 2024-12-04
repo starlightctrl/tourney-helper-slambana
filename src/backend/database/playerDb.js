@@ -18,17 +18,38 @@ class PlayerDatabase {
             const data = await fs.readFile(DB_PATH, 'utf8');
             this.players = JSON.parse(data);
         } catch (error) {
-            // If file doesn't exist, create empty database
-            this.players = [];
-            await this.save();
+            // If file doesn't exist, try to get from localStorage
+            console.log('Local file not found, checking localStorage');
+            if (typeof window !== 'undefined') {
+                const localData = localStorage.getItem('playerDatabase');
+                if (localData) {
+                    this.players = JSON.parse(localData);
+                    console.log('Loaded from localStorage:', this.players.length, 'players');
+                } else {
+                    this.players = [];
+                }
+            } else {
+                this.players = [];
+            }
         }
         this.initialized = true;
     }
 
     async save() {
         console.log('Saving database with players:', this.players.length);
-        await fs.writeFile(DB_PATH, JSON.stringify(this.players, null, 2));
-        console.log('Database saved successfully');
+        // Try to save to file first
+        try {
+            await fs.writeFile(DB_PATH, JSON.stringify(this.players, null, 2));
+            console.log('Database saved successfully to file');
+        } catch (error) {
+            // If file save fails, save to localStorage
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('playerDatabase', JSON.stringify(this.players));
+                console.log('Database saved successfully to localStorage');
+            } else {
+                console.error('Unable to save database:', error);
+            }
+        }
     }
 
     async addPlayer(player) {

@@ -157,6 +157,37 @@
         const file = event.target.files[0];
         if (!file) return;
 
+        // If it's a JSON file, handle it directly
+        if (file.name.endsWith('.json')) {
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+                if (Array.isArray(data)) {
+                    const response = await fetch('/api/players/import', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ players: data })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(await response.text());
+                    }
+                    
+                    await loadPlayers();
+                    successMessage = 'JSON database imported successfully';
+                    setTimeout(() => successMessage = '', 3000);
+                    return;
+                }
+            } catch (error) {
+                importError = `JSON import failed: ${error.message}`;
+                setTimeout(() => importError = '', 3000);
+                return;
+            }
+        }
+
+        // Handle Excel/CSV files as before
         const formData = new FormData();
         formData.append('file', file);
 
@@ -222,7 +253,7 @@
         <div class="import">
             <input 
                 type="file" 
-                accept=".xlsx,.csv"
+                accept=".xlsx,.csv,.json"
                 on:change={handleFileUpload}
                 bind:this={fileInput}
                 style="display: none"
