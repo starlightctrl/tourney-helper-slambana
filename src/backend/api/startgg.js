@@ -15,11 +15,14 @@ class StartGGAPI {
 
     async initialize() {
         try {
+            console.log('Available env vars:', import.meta.env); // This will show all available env vars
             this.token = import.meta.env.VITE_STARTGG_API_KEY;
+            console.log('Token value:', this.token); // This will show the actual token value
             if (!this.token) {
                 throw new Error('VITE_STARTGG_API_KEY environment variable not set');
             }
         } catch (error) {
+            console.error('Initialization error:', error);
             throw new Error('Failed to load start.gg API token: ' + error.message);
         }
     }
