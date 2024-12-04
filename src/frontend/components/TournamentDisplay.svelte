@@ -35,6 +35,15 @@
     let error = null;
     let eventFees = {};  // Store fees for each event
     let playerDatabase = {};  // Will store player info keyed by tag
+    
+    // Make eventFees reactive by tracking total prize pools
+    $: totalPrizePools = Object.entries(eventFees).reduce((acc, [name, fee]) => {
+        const event = tournamentData?.tournament?.events?.find(e => e.name === name);
+        if (event) {
+            acc[name] = calculatePrizePool(event);
+        }
+        return acc;
+    }, {});
 
     async function loadPlayerDatabase() {
         try {
@@ -68,13 +77,13 @@
             const adjustedEntrants = Math.max(0, event.numEntrants - firstTimers - dqs);
             return 3 * adjustedEntrants;
         } else {
-            const fee = eventFees[event.name] || 0;
+            const fee = Number(eventFees[event.name]) || 0;
             return fee * getTotalParticipants(event);
         }
     }
 
     function getPrizeForPlacement(event, placement) {
-        if (!eventFees[event.name] && !isSlambana) return 0;
+        if ((!eventFees[event.name] || eventFees[event.name] <= 0) && !isSlambana) return 0;
         
         const prizePool = calculatePrizePool(event);
         const entrants = getTotalParticipants(event); // Use adjusted count
@@ -283,7 +292,13 @@
                                         <span class="dollar-symbol">$</span>
                                         <input 
                                             type="number" 
-                                            bind:value={eventFees[event.name]} 
+                                            value={eventFees[event.name] || ''}
+                                            on:input={(e) => {
+                                                eventFees = {
+                                                    ...eventFees,
+                                                    [event.name]: e.target.value
+                                                };
+                                            }}
                                             min="0"
                                             step="0.01"
                                             placeholder="0.00"
@@ -291,7 +306,7 @@
                                     </div>
                                 </label>
                             </div>
-                            {#if eventFees[event.name]}
+                            {#if eventFees[event.name] > 0}
                                 <p class="prize-pool">Total Prize Pool: <span>${calculatePrizePool(event).toFixed(2)}</span></p>
                             {/if}
                         </div>
