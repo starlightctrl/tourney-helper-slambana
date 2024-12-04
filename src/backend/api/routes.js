@@ -105,6 +105,38 @@ router.delete('/players/:tag', async (req, res) => {
 
 router.post('/players/import', upload.single('file'), async (req, res) => {
     try {
+        // Handle JSON data sent directly
+        if (req.headers['content-type'] === 'application/json') {
+            const players = req.body.players;
+            if (!Array.isArray(players)) {
+                return res.status(400).json({ error: 'Invalid JSON format. Expected array of players.' });
+            }
+
+            const existingPlayers = await playerDb.getAllPlayers();
+            let importCount = { new: 0, updated: 0 };
+
+            for (const playerData of players) {
+                const existingPlayer = existingPlayers.find(p => 
+                    p.tag.toLowerCase() === playerData.tag.toLowerCase()
+                );
+
+                if (existingPlayer) {
+                    await playerDb.updatePlayer(existingPlayer.tag, playerData);
+                    importCount.updated++;
+                } else {
+                    await playerDb.addPlayer(playerData);
+                    importCount.new++;
+                }
+            }
+
+            return res.json({
+                message: 'Import successful',
+                newPlayers: importCount.new,
+                updatedPlayers: importCount.updated
+            });
+        }
+
+        // Handle Excel/CSV file upload
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
         }
