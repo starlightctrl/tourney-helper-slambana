@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import startgg from '$lib/api/startgg';
+import startgg from '$lib/api/startgg.js';
 
 export async function GET({ params }) {
     const { slug } = params;
