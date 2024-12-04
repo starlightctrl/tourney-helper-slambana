@@ -105,12 +105,8 @@ router.delete('/players/:tag', async (req, res) => {
 
 router.post('/players/import', upload.single('file'), async (req, res) => {
     try {
-        console.log('Import request received');
-        console.log('Content-Type:', req.headers['content-type']);
-        console.log('Request body:', req.body);
-
         // Handle JSON data sent directly
-        if (req.headers['content-type']?.includes('application/json')) {
+        if (req.headers['content-type'] === 'application/json') {
             const players = req.body.players;
             if (!Array.isArray(players)) {
                 return res.status(400).json({ error: 'Invalid JSON format. Expected array of players.' });

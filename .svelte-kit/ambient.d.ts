@@ -26,8 +26,6 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const STARTGG_API_KEY: string;
-	export const VITE_STARTGG_API_KEY: string;
 	export const MANPATH: string;
 	export const __MISE_DIFF: string;
 	export const TERM_PROGRAM: string;
@@ -67,6 +65,7 @@ declare module '$env/static/private' {
 	export const LANG: string;
 	export const npm_config_npm_version: string;
 	export const XPC_FLAGS: string;
+	export const FORCE_COLOR: string;
 	export const npm_package_engines_node: string;
 	export const npm_config_node_gyp: string;
 	export const npm_package_version: string;
@@ -119,8 +118,6 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		STARTGG_API_KEY: string;
-		VITE_STARTGG_API_KEY: string;
 		MANPATH: string;
 		__MISE_DIFF: string;
 		TERM_PROGRAM: string;
@@ -160,6 +157,7 @@ declare module '$env/dynamic/private' {
 		LANG: string;
 		npm_config_npm_version: string;
 		XPC_FLAGS: string;
+		FORCE_COLOR: string;
 		npm_package_engines_node: string;
 		npm_config_node_gyp: string;
 		npm_package_version: string;

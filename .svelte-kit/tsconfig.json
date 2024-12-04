@@ -8,10 +8,10 @@
 				"../src/lib/*"
 			],
 			"$components": [
-				"../src/lib/components"
+				"../src/frontend/components"
 			],
 			"$components/*": [
-				"../src/lib/components/*"
+				"../src/frontend/components/*"
 			]
 		},
 		"rootDirs": [

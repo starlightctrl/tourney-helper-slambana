@@ -15,12 +15,10 @@ class StartGGAPI {
 
     async initialize() {
         try {
-            this.token = process.env.STARTGG_API_KEY;
-            if (!this.token) {
-                throw new Error('STARTGG_API_KEY environment variable not set');
-            }
+            this.token = await fs.readFile(path.join(__dirname, '../../../local-data/token.txt'), 'utf8');
+            this.token = this.token.trim();
         } catch (error) {
-            throw new Error('Failed to load start.gg API token: ' + error.message);
+            throw new Error('Failed to load start.gg API token. Ensure token.txt exists in local-data/');
         }
     }
 

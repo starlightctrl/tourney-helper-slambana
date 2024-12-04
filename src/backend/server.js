@@ -2,16 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import routes from './api/routes.js';
 
-// Load environment variables
-if (process.env.NODE_ENV !== 'production') {
-    try {
-        const result = await import('dotenv');
-        result.config();
-    } catch (err) {
-        console.warn('Optional dependency dotenv not found, skipping .env file loading');
-    }
-}
-
 const app = express();
 const port = process.env.PORT || 3000;
 

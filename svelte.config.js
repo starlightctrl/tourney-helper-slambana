@@ -1,14 +1,12 @@
-import vercel from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-auto';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
     kit: {
-        adapter: vercel({
-            runtime: 'nodejs20.x'
-        }),
+        adapter: adapter(),
         alias: {
             '$lib': './src/lib',
-            '$components': './src/lib/components'
+            '$components': './src/frontend/components'
         }
     }
 };
