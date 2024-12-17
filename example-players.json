@@ -1,0 +1,24 @@
+{
+    "players": [
+        {
+            "tag": "Player1",
+            "aliases": ["P1", "ThePlayer"],
+            "paymentMethods": {
+                "venmo": "@player1",
+                "paypal": "player1@email.com",
+                "zelle": ""
+            },
+            "notes": "Prefers Venmo"
+        },
+        {
+            "tag": "Player2",
+            "aliases": [],
+            "paymentMethods": {
+                "venmo": "",
+                "paypal": "player2@email.com",
+                "zelle": "555-123-4567"
+            },
+            "notes": ""
+        }
+    ]
+}

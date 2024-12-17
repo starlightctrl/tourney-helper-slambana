@@ -1,0 +1,25 @@
+# OS files
+.DS_Store
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+
+# Dependencies
+node_modules/
+/dist
+/build
+
+# Environment files
+.env
+.aider*
+
+# Local data
+local-data/
+!local-data/.gitignore
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,147 @@
+// Prize pool distribution brackets based on entrant count
+export interface PrizeBracket {
+    minEntrants: number;
+    distribution: PrizeDistribution;
+}
+
+// Prize distribution percentages for placements
+export interface PrizeDistribution {
+    first: number;
+    second: number;
+    third?: number;
+    fourth?: number;
+    fifth?: number;     // Will be split between two players
+    seventh?: number;   // Will be split between two players
+}
+
+// Prize calculation result for a single placement
+export interface PlacementPrize {
+    placement: number;
+    amount: number;
+    percentage: number;
+    isSplit?: boolean;  // Indicates if this is a split prize (5th/7th)
+}
+
+// Constants for prize pool brackets
+export const PRIZE_BRACKETS: PrizeBracket[] = [
+    {
+        minEntrants: 1,
+        distribution: {
+            first: 70,
+            second: 30
+        }
+    },
+    {
+        minEntrants: 9,
+        distribution: {
+            first: 60,
+            second: 30,
+            third: 10
+        }
+    },
+    {
+        minEntrants: 17,
+        distribution: {
+            first: 50,
+            second: 25,
+            third: 15,
+            fourth: 10
+        }
+    },
+    {
+        minEntrants: 29,
+        distribution: {
+            first: 40,
+            second: 25,
+            third: 15,
+            fourth: 10,
+            fifth: 5  // Split between two 5th place finishers
+        }
+    },
+    {
+        minEntrants: 40,
+        distribution: {
+            first: 40,
+            second: 20,
+            third: 15,
+            fourth: 10,
+            fifth: 5,  // Split between two 5th place finishers
+            seventh: 2.5  // Split between two 7th place finishers
+        }
+    }
+];
+
+// Utility function to get the appropriate prize bracket based on entrant count
+export function getPrizeBracket(entrantCount: number): PrizeBracket {
+    return [...PRIZE_BRACKETS]
+        .reverse()
+        .find(bracket => entrantCount >= bracket.minEntrants) 
+        || PRIZE_BRACKETS[0];
+}
+
+// Calculate prize distribution for a given entrant count and total prize pool
+export function calculatePrizes(entrantCount: number, totalPrizePool: number): PlacementPrize[] {
+    const bracket = getPrizeBracket(entrantCount);
+    const dist = bracket.distribution;
+    const prizes: PlacementPrize[] = [];
+
+    // Add guaranteed placements
+    prizes.push({
+        placement: 1,
+        percentage: dist.first,
+        amount: (dist.first / 100) * totalPrizePool
+    });
+    prizes.push({
+        placement: 2,
+        percentage: dist.second,
+        amount: (dist.second / 100) * totalPrizePool
+    });
+
+    // Add optional placements if they exist in the distribution
+    if (dist.third) {
+        prizes.push({
+            placement: 3,
+            percentage: dist.third,
+            amount: (dist.third / 100) * totalPrizePool
+        });
+    }
+    if (dist.fourth) {
+        prizes.push({
+            placement: 4,
+            percentage: dist.fourth,
+            amount: (dist.fourth / 100) * totalPrizePool
+        });
+    }
+    if (dist.fifth) {
+        // Add two 5th place prizes
+        prizes.push({
+            placement: 5,
+            percentage: dist.fifth / 2,
+            amount: (dist.fifth / 200) * totalPrizePool,
+            isSplit: true
+        });
+        prizes.push({
+            placement: 5,
+            percentage: dist.fifth / 2,
+            amount: (dist.fifth / 200) * totalPrizePool,
+            isSplit: true
+        });
+    }
+    if (dist.seventh) {
+        // Add two 7th place prizes
+        prizes.push({
+            placement: 7,
+            percentage: dist.seventh / 2,
+            amount: (dist.seventh / 200) * totalPrizePool,
+            isSplit: true
+        });
+        prizes.push({
+            placement: 7,
+            percentage: dist.seventh / 2,
+            amount: (dist.seventh / 200) * totalPrizePool,
+            isSplit: true
+        });
+    }
+
+    return prizes;
+}
